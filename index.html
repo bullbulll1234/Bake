@@ -821,32 +821,111 @@
         };
 
       document
-        .getElementById("checkout-form")
-        .addEventListener("submit", (e) => {
-          e.preventDefault();
+  .getElementById("checkout-form")
+  .addEventListener("submit", (e) => {
+    e.preventDefault();
 
-          const f = new FormData(e.target);
-          const name = f.get("name");
-          const addr = f.get("address");
-          const city = f.get("city");
-          const phone = f.get("phone");
+    const f = new FormData(e.target);
 
-          let text = `Halo Bean'S Bake! Saya ingin memesan:\n\n`;
+    const name = f.get("name");
+    const addr = f.get("address");
+    const city = f.get("city");
+    const phone = f.get("phone");
 
-          cart.forEach((c) => {
-            const p = PRODUCTS.find((x) => x.id === c.id);
-            text += `• ${p.name} (${c.qty} pcs) — ${rupiah(p.price * c.qty)}\n`;
-          });
+    let text = `Halo Bean'S Bake! Saya ingin memesan:\n\n`;
 
-          text += `\nTotal: ${
-            document.getElementById("cart-total").textContent
-          }`;
-          text += `\n\nNama: ${name}\nAlamat: ${addr}, ${city}\nNo WA: ${phone}`;
+    let receiptItems = "";
 
-          const url =
-            "https://wa.me/6285123615246?text=" + encodeURIComponent(text);
-          window.open(url, "_blank");
-        });
+    let total = 0;
+
+    cart.forEach((c) => {
+      const p = PRODUCTS.find((x) => x.id === c.id);
+
+      const subtotal = p.price * c.qty;
+
+      total += subtotal;
+
+      text += `• ${p.name} (${c.qty} pcs) — ${rupiah(subtotal)}\n`;
+
+      receiptItems += `
+        <div class="flex justify-between border-b py-1">
+          <span>${p.name} (${c.qty}x)</span>
+          <span>${rupiah(subtotal)}</span>
+        </div>
+      `;
+    });
+
+    text += `\nTotal: ${rupiah(total)}`;
+    text += `\n\nNama: ${name}`;
+    text += `\nAlamat: ${addr}, ${city}`;
+    text += `\nNo WA: ${phone}`;
+
+    // =========================
+    // TAMPILKAN STRUK
+    // =========================
+    const today = new Date();
+
+    document.getElementById("receipt-content").innerHTML = `
+      <div class="space-y-2">
+
+        <div>
+          <strong>Nama:</strong> ${name}
+        </div>
+
+        <div>
+          <strong>Alamat:</strong> ${addr}, ${city}
+        </div>
+
+        <div>
+          <strong>No WA:</strong> ${phone}
+        </div>
+
+        <div>
+          <strong>Tanggal:</strong>
+          ${today.toLocaleString("id-ID")}
+        </div>
+
+        <hr>
+
+        <div>
+          ${receiptItems}
+        </div>
+
+        <div class="flex justify-between font-bold text-lg pt-3">
+          <span>Total</span>
+          <span>${rupiah(total)}</span>
+        </div>
+
+      </div>
+    `;
+
+    document
+      .getElementById("modal-receipt")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("modal-receipt")
+      .classList.add("flex");
+
+    // =========================
+    // KIRIM WA
+    // =========================
+    const url =
+      "https://wa.me/6285123615246?text=" +
+      encodeURIComponent(text);
+
+    window.open(url, "_blank");
+
+    // reset cart
+    cart = [];
+    updateCartUI();
+
+    // tutup modal checkout
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+
+    e.target.reset();
+  });
 
       // ===============================
       // NAVBAR MOBILE
@@ -868,6 +947,29 @@
       document.getElementById("filter").addEventListener("change", (e) => {
         renderProducts(e.target.value);
       });
+      document
+  .getElementById("close-receipt")
+  .addEventListener("click", () => {
+    document
+      .getElementById("modal-receipt")
+      .classList.add("hidden");
+
+    document
+      .getElementById("modal-receipt")
+      .classList.remove("flex");
+  });
+
+document
+  .getElementById("done-receipt")
+  .addEventListener("click", () => {
+    document
+      .getElementById("modal-receipt")
+      .classList.add("hidden");
+
+    document
+      .getElementById("modal-receipt")
+      .classList.remove("flex");
+  });
     </script>
   </body>
 </html>
