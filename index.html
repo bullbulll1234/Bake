@@ -373,43 +373,6 @@
     </div>
 
     <!-- MODAL CHECKOUT -->
-    <!-- MODAL STRUK -->
-<div
-  id="modal-receipt"
-  class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50"
->
-  <div class="bg-white rounded-lg w-full max-w-lg p-6 shadow-xl">
-    <div class="flex justify-between items-center border-b pb-2">
-      <h3 class="font-bold text-xl text-[#8b4513]">
-        Struk Pembelian
-      </h3>
-
-      <button id="close-receipt" class="text-red-500 font-bold">
-        ✕
-      </button>
-    </div>
-
-    <div id="receipt-content" class="mt-4 text-sm text-gray-700">
-      <!-- isi struk -->
-    </div>
-
-    <div class="mt-5 flex gap-3">
-      <button
-        onclick="window.print()"
-        class="px-4 py-2 bg-[#8b4513] text-white rounded"
-      >
-        Print Struk
-      </button>
-
-      <button
-        id="done-receipt"
-        class="px-4 py-2 border rounded"
-      >
-        Selesai
-      </button>
-    </div>
-  </div>
-</div>
     <div
       id="modal-checkout"
       class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center"
@@ -821,111 +784,32 @@
         };
 
       document
-  .getElementById("checkout-form")
-  .addEventListener("submit", (e) => {
-    e.preventDefault();
+        .getElementById("checkout-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
 
-    const f = new FormData(e.target);
+          const f = new FormData(e.target);
+          const name = f.get("name");
+          const addr = f.get("address");
+          const city = f.get("city");
+          const phone = f.get("phone");
 
-    const name = f.get("name");
-    const addr = f.get("address");
-    const city = f.get("city");
-    const phone = f.get("phone");
+          let text = `Halo Bean'S Bake! Saya ingin memesan:\n\n`;
 
-    let text = `Halo Bean'S Bake! Saya ingin memesan:\n\n`;
+          cart.forEach((c) => {
+            const p = PRODUCTS.find((x) => x.id === c.id);
+            text += `• ${p.name} (${c.qty} pcs) — ${rupiah(p.price * c.qty)}\n`;
+          });
 
-    let receiptItems = "";
+          text += `\nTotal: ${
+            document.getElementById("cart-total").textContent
+          }`;
+          text += `\n\nNama: ${name}\nAlamat: ${addr}, ${city}\nNo WA: ${phone}`;
 
-    let total = 0;
-
-    cart.forEach((c) => {
-      const p = PRODUCTS.find((x) => x.id === c.id);
-
-      const subtotal = p.price * c.qty;
-
-      total += subtotal;
-
-      text += `• ${p.name} (${c.qty} pcs) — ${rupiah(subtotal)}\n`;
-
-      receiptItems += `
-        <div class="flex justify-between border-b py-1">
-          <span>${p.name} (${c.qty}x)</span>
-          <span>${rupiah(subtotal)}</span>
-        </div>
-      `;
-    });
-
-    text += `\nTotal: ${rupiah(total)}`;
-    text += `\n\nNama: ${name}`;
-    text += `\nAlamat: ${addr}, ${city}`;
-    text += `\nNo WA: ${phone}`;
-
-    // =========================
-    // TAMPILKAN STRUK
-    // =========================
-    const today = new Date();
-
-    document.getElementById("receipt-content").innerHTML = `
-      <div class="space-y-2">
-
-        <div>
-          <strong>Nama:</strong> ${name}
-        </div>
-
-        <div>
-          <strong>Alamat:</strong> ${addr}, ${city}
-        </div>
-
-        <div>
-          <strong>No WA:</strong> ${phone}
-        </div>
-
-        <div>
-          <strong>Tanggal:</strong>
-          ${today.toLocaleString("id-ID")}
-        </div>
-
-        <hr>
-
-        <div>
-          ${receiptItems}
-        </div>
-
-        <div class="flex justify-between font-bold text-lg pt-3">
-          <span>Total</span>
-          <span>${rupiah(total)}</span>
-        </div>
-
-      </div>
-    `;
-
-    document
-      .getElementById("modal-receipt")
-      .classList.remove("hidden");
-
-    document
-      .getElementById("modal-receipt")
-      .classList.add("flex");
-
-    // =========================
-    // KIRIM WA
-    // =========================
-    const url =
-      "https://wa.me/6285123615246?text=" +
-      encodeURIComponent(text);
-
-    window.open(url, "_blank");
-
-    // reset cart
-    cart = [];
-    updateCartUI();
-
-    // tutup modal checkout
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-
-    e.target.reset();
-  });
+          const url =
+            "https://wa.me/6285123615246?text=" + encodeURIComponent(text);
+          window.open(url, "_blank");
+        });
 
       // ===============================
       // NAVBAR MOBILE
@@ -947,29 +831,6 @@
       document.getElementById("filter").addEventListener("change", (e) => {
         renderProducts(e.target.value);
       });
-      document
-  .getElementById("close-receipt")
-  .addEventListener("click", () => {
-    document
-      .getElementById("modal-receipt")
-      .classList.add("hidden");
-
-    document
-      .getElementById("modal-receipt")
-      .classList.remove("flex");
-  });
-
-document
-  .getElementById("done-receipt")
-  .addEventListener("click", () => {
-    document
-      .getElementById("modal-receipt")
-      .classList.add("hidden");
-
-    document
-      .getElementById("modal-receipt")
-      .classList.remove("flex");
-  });
     </script>
   </body>
 </html>
