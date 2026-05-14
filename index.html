@@ -4,15 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bean'S Bake</title>
-
+    <!-- Tailwind via CDN (production-ready setup would use npm/build) -->
     <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
+      /* small custom styles */
       .card-img {
         height: 220px;
         object-fit: cover;
       }
-
       .hero-bg {
         background-image: linear-gradient(
           90deg,
@@ -20,26 +19,8 @@
           rgba(220, 220, 220, 0.6)
         );
       }
-
-      @media print {
-        body * {
-          visibility: hidden;
-        }
-
-        #modal-receipt,
-        #modal-receipt * {
-          visibility: visible;
-        }
-
-        #modal-receipt {
-          position: absolute;
-          inset: 0;
-          background: white;
-        }
-      }
     </style>
   </head>
-
   <body
     style="
       background: linear-gradient(
@@ -49,7 +30,7 @@
       );
     "
   >
-    <!-- NAVBAR -->
+    <!-- NAV -->
     <header
       class="shadow-sm sticky top-0 z-30"
       style="
@@ -60,100 +41,152 @@
         );
       "
     >
-      <div class="max-w-6xl mx-auto px-4">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
-          <a href="#" class="flex items-center gap-2">
-            <img
-              src="images/logo.jpg"
-              class="w-10 h-10 rounded-full object-cover"
-            />
+          <div class="flex items-center gap-4">
+            <a href="#" class="flex items-center gap-2">
+              <img
+                src="images/logo.jpg"
+                alt=""
+                class="w-10 h-10 rounded-full object-cover"
+              />
+              <span class="font-semibold text-xl text-[#8b4513]"
+                >Bean'S Bake</span
+              >
+            </a>
+          </div>
 
-            <span class="font-bold text-xl text-[#8b4513]"
-              >Bean'S Bake</span
-            >
-          </a>
-
-          <nav class="hidden md:flex gap-6 text-white">
-            <a href="#produk">Produk</a>
-            <a href="#tentang">Tentang</a>
-            <a href="#kontak">Kontak</a>
-
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a href="#produk" class="hover:text-white text-white">Produk</a>
+            <a href="#tentang" class="hover:text-white text-white">Tentang</a>
+            <a href="#kontak" class="hover:text-white text-white">Kontak</a>
             <button id="btn-cart" class="relative">
-              🛒
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-[#8b4513]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4"
+                />
+              </svg>
               <span
                 id="cart-count"
                 class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1 rounded"
+                >0</span
               >
-                0
-              </span>
             </button>
           </nav>
+
+          <div class="md:hidden">
+            <button id="mobile-menu-btn" aria-label="menu">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7 text-[#8b4513]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobile-menu" class="hidden md:hidden border-t">
+        <div class="px-4 py-3 space-y-2">
+          <a href="#produk" class="block">Produk</a>
+          <a href="#tentang" class="block">Tentang</a>
+          <a href="#kontak" class="block">Kontak</a>
         </div>
       </div>
     </header>
-
     <!-- HERO -->
     <section class="hero-bg relative py-20">
+      <!-- overlay untuk kontras -->
       <div class="absolute inset-0 bg-black/40"></div>
 
       <div class="relative max-w-6xl mx-auto px-4">
-        <div class="grid md:grid-cols-2 gap-10 items-center">
-          <div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <!-- TEXT -->
+          <div class="text-center md:text-left">
             <h1
-              class="text-4xl md:text-5xl font-extrabold text-white leading-tight"
+              class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg leading-tight"
             >
               Bean'S Bake — Fresh From The Heart
             </h1>
 
-            <p class="mt-6 text-white/90 leading-relaxed">
+            <p class="mt-6 text-white/90 drop-shadow max-w-lg leading-relaxed">
               Nikmati berbagai pilihan premium mulai dari cookies renyah,
-              brownies fudgy, pizza loyang bulat, roti lembut, dan banyak
-              kreasi lainnya.
+              brownies fudgy, pizza loyang bulat, roti lembut, dan banyak kreasi
+              lainnya. Dibuat dari resep terbaik, tanpa pengawet, selalu fresh
+              setiap hari.
             </p>
 
-            <div class="mt-8 flex gap-4">
+            <div
+              class="mt-8 flex flex-wrap justify-center md:justify-start gap-4"
+            >
+              <!-- Tombol Lihat Produk -->
               <a
                 href="#produk"
-                class="px-6 py-3 bg-white text-gray-800 rounded-lg"
+                class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-100 hover:scale-105 transition transform duration-200"
               >
                 Lihat Produk
               </a>
 
+              <!-- Tombol Hubungi Kami -->
               <a
                 href="#kontak"
-                class="px-6 py-3 bg-white text-gray-800 rounded-lg"
+                class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-100 hover:scale-105 transition transform duration-200"
               >
                 Hubungi Kami
               </a>
             </div>
           </div>
 
+          <!-- IMAGE (opsional) -->
           <div class="hidden md:block">
             <img
               src="images/logo.jpg"
-              class="rounded-xl shadow-lg w-48 mx-auto"
+              alt="cookies hero"
+              class="rounded-xl shadow-lg w-48 h-auto mx-auto"
             />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PRODUK -->
+    <!-- PRODUCTS -->
     <section id="produk" class="max-w-6xl mx-auto px-4 py-12">
       <div class="flex justify-between items-center">
         <h2 class="text-2xl font-bold text-[#8b4513]">Pilihan Menu</h2>
-
-        <select id="filter" class="border rounded px-3 py-2 text-sm">
-          <option value="all">Semua</option>
-          <option value="best">Best Seller</option>
-          <option value="new">Baru</option>
-        </select>
+        <div>
+          <select id="filter" class="border rounded px-3 py-2 text-sm">
+            <option value="all">Semua</option>
+            <option value="best">Best Seller</option>
+            <option value="new">Baru</option>
+          </select>
+        </div>
       </div>
 
       <div
         id="list-products"
         class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
-      ></div>
+      >
+        <!-- cards di-generate lewat JS -->
+      </div>
     </section>
 
     <!-- ABOUT -->
@@ -172,26 +205,46 @@
         class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center"
       >
         <div>
-          <h3 class="text-2xl font-bold text-[#8b4513]">
+          <h3 class="text-xl font-semibold text-gray-800">
             Tentang Bean'S Bake
           </h3>
 
-          <p class="mt-4 text-gray-700 leading-relaxed">
-            Bean'S Bake menghadirkan berbagai cookies premium dan brownies
-            homemade dengan bahan pilihan berkualitas.
+          <p class="mt-3 text-gray-700 leading-relaxed">
+            Selamat datang di <strong>Bean'S Bake</strong>, rumah bagi aneka kue
+            dan cookies premium yang dibuat dengan sepenuh hati. Kami percaya
+            bahwa setiap gigitan kue bukan hanya soal rasa, tetapi juga tentang
+            momen-momen kecil yang menghadirkan kebahagiaan. <br /><br />
+            Karena itu, kami selalu menggunakan bahan pilihan, resep terbaik,
+            dan proses pembuatan yang higienis untuk menghasilkan cita rasa yang
+            konsisten, lembut, dan selalu bikin nagih. Setiap produk dibuat
+            <em>fresh</em> setiap hari, tanpa pengawet, dan dipanggang oleh tim
+            yang berpengalaman. <br /><br />
+            Kami hadir untuk menemani hari-harimu—mulai dari camilan santai di
+            rumah, hampers spesial untuk orang tersayang, hingga kebutuhan acara
+            kantor maupun perayaan besar.
+            <strong>
+              Bean'S Bake: manis, hangat, dan siap membuat harimu lebih
+              istimewa.
+            </strong>
           </p>
+
+          <ul class="mt-4 space-y-2 text-sm text-gray-600">
+            <li>• Bahan import dan lokal berkualitas</li>
+            <li>• Tanpa pengawet</li>
+          </ul>
         </div>
 
         <div>
           <img
             src="images/bake.jpg"
+            alt="about"
             class="rounded-lg shadow-md border-2 border-gray-400"
           />
         </div>
       </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- CONTACT & FOOTER -->
     <footer
       id="kontak"
       class="mt-12"
@@ -201,126 +254,162 @@
           rgba(180, 180, 180, 0.95),
           rgba(200, 200, 200, 0.8)
         );
+        color: #333;
       "
     >
-      <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-6">
+      <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6">
+        <!-- Profil -->
         <div>
-          <h4 class="font-bold text-lg">Bean'S Bake</h4>
-
-          <p class="text-sm mt-2">
-            Perumahan Puri Delta Angsana blok BE 07
+          <h4 class="font-semibold text-lg text-gray-800">Bean'S Bake</h4>
+          <p class="text-sm mt-2 leading-relaxed text-gray-700">
+            Perumahan Puri Delta Angsana blok BE 07<br />
+            Buka: 08.00 - 18.00
           </p>
         </div>
 
+        <!-- Cara Pesan -->
         <div>
-          <h4 class="font-bold text-lg">Kontak</h4>
+          <h4 class="font-semibold text-lg text-gray-800">Cara Pesan</h4>
+          <p class="text-sm mt-2 leading-relaxed text-gray-700">
+            Pilih produk → Tambah ke keranjang → Isi form checkout → Konfirmasi
+            via WhatsApp
+          </p>
+        </div>
 
-          <p class="text-sm mt-2">
+        <!-- Kontak -->
+        <div>
+          <h4 class="font-semibold text-lg text-gray-800">Kontak</h4>
+          <p class="text-sm mt-2 text-gray-700">
             WA:
             <a
+              class="underline hover:text-gray-900 transition"
               href="https://wa.me/6285123615246"
               target="_blank"
-              class="underline"
             >
               +62 851-2361-5246
             </a>
           </p>
         </div>
 
+        <!-- Ikuti Kami -->
         <div>
-          <h4 class="font-bold text-lg">Instagram</h4>
+          <h4 class="font-semibold text-lg text-gray-800">Ikuti Kami</h4>
+          <div class="flex items-center gap-4 mt-3">
+            <!-- Instagram -->
+            <a
+              href="https://instagram.com/bakery.auz"
+              target="_blank"
+              class="hover:opacity-80 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                fill="currentColor"
+                class="text-gray-800"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 2c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3zm4.5-.8c-.4 0-.8.3-.8.8s.3.8.8.8.8-.3.8-.8-.4-.8-.8-.8z"
+                />
+              </svg>
+            </a>
 
-          <a
-            href="https://instagram.com/bakery.auz"
-            target="_blank"
-            class="underline text-sm"
-          >
-            @bakery.auz
-          </a>
+            <!-- TikTok -->
+            <a
+              href="https://tiktok.com/@bakery.auzz"
+              target="_blank"
+              class="hover:opacity-80 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                fill="currentColor"
+                class="text-gray-800"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12.75 2h3.19c.22 1.6 1.39 2.94 2.95 3.36v3.2c-1.17-.03-2.29-.37-3.25-.98v6.42c0 3.2-2.6 5.8-5.8 5.8S4 17.2 4 14s2.6-5.8 5.8-5.8c.33 0 .65.03.96.1v3.3c-.3-.12-.63-.18-.96-.18-1.34 0-2.43 1.1-2.43 2.46s1.1 2.46 2.43 2.46 2.43-1.1 2.43-2.46V2z"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
 
-      <div class="text-center text-sm py-3">
-        © 2026 Bean'S Bake
+      <div
+        class="text-center text-sm py-3"
+        style="background: rgba(200, 200, 200, 0.5); color: #333"
+      >
+        © 2026 Bean'S Bake-
       </div>
     </footer>
 
-    <!-- CART -->
+    <!-- CART DRAWER -->
     <div
       id="cart-drawer"
       class="fixed right-4 bottom-6 w-96 bg-white rounded-lg shadow-xl transform translate-y-96 transition-transform duration-300"
     >
       <div class="p-4 border-b flex justify-between items-center">
         <h4 class="font-semibold">Keranjang</h4>
-
         <button id="close-cart">Tutup</button>
       </div>
-
       <div id="cart-items" class="p-4 space-y-3 max-h-64 overflow-auto"></div>
-
       <div class="p-4 border-t">
         <div class="flex justify-between items-center">
           <div class="font-semibold">Total</div>
-
           <div id="cart-total">Rp0</div>
         </div>
-
-        <button
-          id="checkout-btn"
-          class="w-full mt-4 px-4 py-2 bg-[#d2691e] text-white rounded"
-        >
-          Checkout
-        </button>
+        <div class="mt-3">
+          <button
+            id="checkout-btn"
+            class="w-full px-4 py-2 bg-[#d2691e] text-white rounded"
+          >
+            Checkout
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- MODAL CHECKOUT -->
     <div
       id="modal-checkout"
-      class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-40"
+      class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center"
     >
       <div class="bg-white rounded-lg w-full max-w-xl p-6">
         <div class="flex justify-between items-center">
           <h3 class="font-semibold text-lg">Form Checkout</h3>
-
           <button id="close-checkout">✕</button>
         </div>
-
         <form id="checkout-form" class="mt-4 space-y-3">
           <div>
-            <label>Nama</label>
-
+            <label class="text-sm">Nama</label>
             <input
               name="name"
               required
               class="w-full border px-3 py-2 rounded"
             />
           </div>
-
           <div>
-            <label>Alamat</label>
-
+            <label class="text-sm">Alamat</label>
             <textarea
               name="address"
               required
               class="w-full border px-3 py-2 rounded"
             ></textarea>
           </div>
-
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label>Kota</label>
-
+              <label class="text-sm">Kota</label>
               <input
                 name="city"
                 required
                 class="w-full border px-3 py-2 rounded"
               />
             </div>
-
             <div>
-              <label>No WA</label>
-
+              <label class="text-sm">No. HP (WA)</label>
               <input
                 name="phone"
                 required
@@ -328,15 +417,13 @@
               />
             </div>
           </div>
-
           <div class="flex gap-2">
             <button
               type="submit"
               class="px-4 py-2 bg-[#d2691e] text-white rounded"
             >
-              Konfirmasi
+              Konfirmasi & Kirim WA
             </button>
-
             <button
               type="button"
               id="cancel-checkout"
@@ -349,89 +436,188 @@
       </div>
     </div>
 
-    <!-- MODAL STRUK -->
-    <div
-      id="modal-receipt"
-      class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50"
-    >
-      <div class="bg-white rounded-lg w-full max-w-lg p-6 shadow-xl">
-        <div class="flex justify-between items-center border-b pb-2">
-          <h3 class="font-bold text-xl text-[#8b4513]">
-            Struk Pembelian
-          </h3>
-
-          <button id="close-receipt" class="text-red-500 font-bold">
-            ✕
-          </button>
-        </div>
-
-        <div id="receipt-content" class="mt-4 text-sm text-gray-700"></div>
-
-        <div class="mt-5 flex gap-3">
-          <button
-            onclick="window.print()"
-            class="px-4 py-2 bg-[#8b4513] text-white rounded"
-          >
-            Print Struk
-          </button>
-
-          <button
-            id="done-receipt"
-            class="px-4 py-2 border rounded"
-          >
-            Selesai
-          </button>
-        </div>
-      </div>
-    </div>
-
+    <!-- SCRIPTS -->
     <script>
-      // ===========================
+      // ===============================
       // DATA PRODUK
-      // ===========================
+      // ===============================
       const PRODUCTS = [
-        {
+         {
           id: 1,
           name: "Dubai Chewy Cookie",
           price: 20000,
           img: "images/produk/dubai.jpg",
           tags: ["new"],
-          desc: "Chewy cookie premium.",
+          desc: "Chewy cookie premium dengan tekstur lembut dan rasa khas ala Dubai.",
         },
-
-        {
+         {
           id: 2,
+          name: "Scoopable Cookie Choco Pistachio",
+          price: 12000,
+          img: "images/produk/pistachio.jpeg",
+          tags: ["new"],
+          desc: "Scoopable Cookie Choco Pistachio Tanpa Kunafa.",
+        },
+        {
+          id: 3,
+          name: "Scoopable Classic Original",
+          price: 12000,
+          img: "images/produk/classic og.jpeg",
+          tags: ["new"],
+          desc: "Scoopable Cookie Classic Original Feeling Dark Choco.",
+        },
+        {
+          id: 4,
+          name: "Scoopable Cookie Velvet",
+          price: 12000,
+          img: "images/produk/keju.jpeg",
+          tags: ["new"],
+          desc: "Scoopable Cookie Velvet Feeling Cheese.",
+        },
+        {
+          id: 5,
+          name: "Bundling Package",
+          price: 30000,
+          img: "images/produk/bundling.jpeg",
+          tags: ["new"],
+          desc: "1 Dubai Chewy Cookie dan 1 Scoopable Cookie Varian Classic Original.",
+        },
+        {
+          id: 6,
           name: "Oreo Cookie",
           price: 8000,
           img: "images/produk/oreo.jpg",
           tags: ["best"],
-          desc: "Cookies oreo premium.",
+          desc: "Renyah dengan lelehan cokelat premium.",
         },
-
         {
-          id: 3,
+          id: 7,
+          name: "Matcha Cheese Cookies",
+          price: 9000,
+          img: "images/produk/matcha.jpg",
+          tags: ["new"],
+          desc: "Lembut dengan cream cheese.",
+        },
+        {
+          id: 8,
+          name: "Matcha Choco Cookies",
+          price: 8000,
+          img: "images/produk/choco.jpg",
+          tags: [],
+          desc: "Aroma matcha lembut dengan chocolate.",
+        },
+        {
+          id: 9,
+          name: "Matcha Choco Cheese Cookies",
+          price: 10000,
+          img: "images/produk/cookiekejucoklat.jpeg",
+          tags: [],
+          desc: "Aroma matcha lembut dengan chocolate cheese.",
+        },
+        {
+          id: 10,
+          name: "Double Choco",
+          price: 7000,
+          img: "images/produk/doble.jpg",
+          tags: ["best"],
+          desc: "Cokelat intens untuk pecinta cokelat.",
+        },
+        {
+          id: 11,
+          name: "Monster Cookies",
+          price: 6000,
+          img: "images/produk/monster.jpg",
+          tags: [],
+          desc: "Cokelat intens untuk pecinta cokelat.",
+        },
+        {
+          id: 12,
+          name: "Red Cookies Cheese",
+          price: 7000,
+          img: "images/produk/redcheese.jpg",
+          tags: ["best"],
+          desc: "Cokelat intens untuk pecinta cokelat.",
+        },
+        {
+          id: 13,
+          name: "Red Cookies Choco Cheese",
+          price: 8000,
+          img: "images/produk/chococheesred.jpg",
+          tags: ["best"],
+          desc: "Cokelat intens untuk pecinta cokelat.",
+        },
+        {
+          id: 14,
+          name: "Red Cookies",
+          price: 6000,
+          img: "images/produk/redcookies.jpg",
+          tags: [],
+          desc: "Cokelat intens untuk pecinta cokelat.",
+        },
+        {
+          id: 15,
+          name: "Original Cookies",
+          price: 6000,
+          img: "images/produk/og.jpg",
+          tags: [],
+          desc: "Cita rasa klasik yang disukai semua orang.",
+        },
+        {
+          id: 16,
+          name: "Pizza Lingkaran",
+          price: 6000,
+          img: "images/produk/pizza.jpg",
+          tags: [],
+          desc: "Pizza rumahan enak dan lembut.",
+        },
+        {
+          id: 17,
           name: "Brownies",
           price: 50000,
           img: "images/produk/brownies.jpg",
           tags: ["best"],
-          desc: "Brownies lembut premium.",
+          desc: "Brownies fudgy lembut premium.",
         },
+        {
+          id: 18,
+          name: "Brownies Bites Size M",
+          price: 12000,
+          img: "images/produk/bites.jpg",
+          tags: [],
+          desc: "Brownies kecil enak.",
+        },
+        {
+          id: 19,
+          name: "Brownies Bites Size L",
+          price: 20000,
+          img: "images/produk/bites.jpg",
+          tags: ["best"],
+          desc: "Porsi lebih besar, lebih puas.",
+        },
+        {
+          id: 20,
+          name: "Brownies Cup Muffin",
+          price: 10000,
+          img: "images/produk/muffin.jpg",
+          tags: ["best"],
+          desc: "Brownies cup empuk dan nikmat.",
+        },
+      
       ];
 
-      // ===========================
-      // STATE
-      // ===========================
+      // ===============================
+      // STATE & HELPERS
+      // ===============================
       let cart = [];
 
       const rupiah = (n) =>
         "Rp" + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-      // ===========================
+      // ===============================
       // RENDER PRODUK
-      // ===========================
+      // ===============================
       function renderProducts(filter = "all") {
         const container = document.getElementById("list-products");
-
         container.innerHTML = "";
 
         const list = PRODUCTS.filter((p) =>
@@ -440,291 +626,211 @@
 
         list.forEach((p) => {
           const card = document.createElement("div");
-
           card.className = "bg-white rounded-lg shadow p-4";
 
           card.innerHTML = `
-            <img src="${p.img}" class="w-full rounded card-img">
+        <img src="${p.img}" class="w-full rounded card-img">
+        <h4 class="mt-3 font-semibold text-[#8b4513]">${p.name}</h4>
+        <p class="text-sm text-gray-600">${p.desc}</p>
 
-            <h4 class="mt-3 font-semibold text-[#8b4513]">
-              ${p.name}
-            </h4>
-
-            <p class="text-sm text-gray-600">
-              ${p.desc}
-            </p>
-
-            <div class="mt-3 flex justify-between items-center">
-              <div class="font-semibold">
-                ${rupiah(p.price)}
-              </div>
-
-              <button
-                data-id="${p.id}"
-                class="btn-add px-3 py-1 bg-[#d2691e] text-white rounded text-sm"
-              >
-                Tambah
-              </button>
-            </div>
-          `;
-
+        <div class="mt-3 flex justify-between items-center">
+          <div class="font-semibold">${rupiah(p.price)}</div>
+          <div class="flex gap-2">
+            <button data-id="${
+              p.id
+            }" class="btn-add px-3 py-1 border rounded text-sm">Tambah</button>
+            <button data-id="${
+              p.id
+            }" class="btn-detail px-3 py-1 bg-[#d2691e] text-white rounded text-sm">Detail</button>
+          </div>
+        </div>
+      `;
           container.appendChild(card);
         });
 
-        document.querySelectorAll(".btn-add").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            addToCart(Number(e.target.dataset.id));
-          });
-        });
+        // event add
+        document
+          .querySelectorAll(".btn-add")
+          .forEach((btn) =>
+            btn.addEventListener("click", (e) =>
+              addToCart(Number(e.target.dataset.id))
+            )
+          );
+
+        // event detail
+        document
+          .querySelectorAll(".btn-detail")
+          .forEach((btn) =>
+            btn.addEventListener("click", (e) =>
+              showDetail(Number(e.target.dataset.id))
+            )
+          );
       }
 
-      // ===========================
-      // CART
-      // ===========================
+      function showDetail(id) {
+        const p = PRODUCTS.find((x) => x.id === id);
+        alert(`${p.name}\n\n${p.desc}\nHarga: ${rupiah(p.price)}`);
+      }
+
+      // ===============================
+      // CART FUNCTIONS
+      // ===============================
       function addToCart(id) {
         const found = cart.find((c) => c.id === id);
+        if (found) found.qty++;
+        else cart.push({ id, qty: 1 });
 
-        if (found) {
-          found.qty++;
-        } else {
-          cart.push({ id, qty: 1 });
+        updateCartUI();
+      }
+
+      function changeQty(id, amount) {
+        const item = cart.find((c) => c.id === id);
+        if (!item) return;
+
+        item.qty += amount;
+        if (item.qty <= 0) {
+          cart = cart.filter((c) => c.id !== id);
         }
+        updateCartUI();
+      }
 
+      function removeItem(id) {
+        cart = cart.filter((c) => c.id !== id);
         updateCartUI();
       }
 
       function updateCartUI() {
         const count = cart.reduce((s, i) => s + i.qty, 0);
-
         document.getElementById("cart-count").textContent = count;
 
+        const drawer = document.getElementById("cart-drawer");
         const wrap = document.getElementById("cart-items");
-
         wrap.innerHTML = "";
 
         let total = 0;
 
         cart.forEach((ci) => {
           const p = PRODUCTS.find((x) => x.id === ci.id);
-
           total += p.price * ci.qty;
 
           const row = document.createElement("div");
-
           row.className = "flex justify-between items-center";
 
           row.innerHTML = `
-            <div>
-              <div class="font-medium">
-                ${p.name}
-              </div>
+        <div class="flex items-center gap-3">
+          <img src="${p.img}" class="w-12 h-12 rounded object-cover">
+          <div>
+            <div class="text-sm font-medium">${p.name}</div>
+            <div class="text-xs text-gray-500">${rupiah(p.price)} x ${
+            ci.qty
+          }</div>
+          </div>
+        </div>
 
-              <div class="text-sm text-gray-500">
-                ${ci.qty} x ${rupiah(p.price)}
-              </div>
-            </div>
-
-            <div class="font-semibold">
-              ${rupiah(p.price * ci.qty)}
-            </div>
-          `;
-
+        <div class="flex gap-2">
+          <button class="btn-decrease px-2 border" data-id="${ci.id}">-</button>
+          <button class="btn-increase px-2 border" data-id="${ci.id}">+</button>
+          <button class="btn-remove px-2 border" data-id="${
+            ci.id
+          }">Hapus</button>
+        </div>
+      `;
           wrap.appendChild(row);
         });
 
-        document.getElementById("cart-total").textContent =
-          rupiah(total);
+        document.getElementById("cart-total").textContent = rupiah(total);
+        drawer.style.transform =
+          cart.length > 0 ? "translateY(0)" : "translateY(24rem)";
 
-        document.getElementById("cart-drawer").style.transform =
-          cart.length > 0
-            ? "translateY(0)"
-            : "translateY(24rem)";
+        // events
+        document
+          .querySelectorAll(".btn-decrease")
+          .forEach((btn) =>
+            btn.addEventListener("click", (e) =>
+              changeQty(Number(e.target.dataset.id), -1)
+            )
+          );
+        document
+          .querySelectorAll(".btn-increase")
+          .forEach((btn) =>
+            btn.addEventListener("click", (e) =>
+              changeQty(Number(e.target.dataset.id), +1)
+            )
+          );
+        document
+          .querySelectorAll(".btn-remove")
+          .forEach((btn) =>
+            btn.addEventListener("click", (e) =>
+              removeItem(Number(e.target.dataset.id))
+            )
+          );
       }
 
-      // ===========================
+      // ===============================
       // CHECKOUT
-      // ===========================
+      // ===============================
       const modal = document.getElementById("modal-checkout");
 
-      document
-        .getElementById("checkout-btn")
-        .addEventListener("click", () => {
-          if (cart.length === 0) {
-            alert("Keranjang masih kosong!");
-            return;
-          }
-
-          modal.classList.remove("hidden");
-          modal.classList.add("flex");
-        });
+      document.getElementById("checkout-btn").addEventListener("click", () => {
+        if (cart.length === 0) return alert("Keranjang masih kosong!");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      });
 
       document.getElementById("close-checkout").onclick =
-        document.getElementById("cancel-checkout").onclick =
-        () => {
+        document.getElementById("cancel-checkout").onclick = () => {
           modal.classList.add("hidden");
           modal.classList.remove("flex");
         };
 
-      // ===========================
-      // SUBMIT CHECKOUT
-      // ===========================
       document
         .getElementById("checkout-form")
         .addEventListener("submit", (e) => {
           e.preventDefault();
 
           const f = new FormData(e.target);
-
           const name = f.get("name");
           const addr = f.get("address");
           const city = f.get("city");
           const phone = f.get("phone");
 
-          let text =
-            "Halo Bean'S Bake! Saya ingin memesan:%0A%0A";
-
-          let receiptItems = "";
-
-          let total = 0;
+          let text = `Halo Bean'S Bake! Saya ingin memesan:\n\n`;
 
           cart.forEach((c) => {
             const p = PRODUCTS.find((x) => x.id === c.id);
-
-            const subtotal = p.price * c.qty;
-
-            total += subtotal;
-
-            text += `• ${p.name} (${c.qty} pcs) - ${rupiah(
-              subtotal
-            )}%0A`;
-
-            receiptItems += `
-              <div class="flex justify-between border-b py-2">
-                <span>${p.name} (${c.qty}x)</span>
-                <span>${rupiah(subtotal)}</span>
-              </div>
-            `;
+            text += `• ${p.name} (${c.qty} pcs) — ${rupiah(p.price * c.qty)}\n`;
           });
 
-          text += `%0ATotal: ${rupiah(total)}`;
-          text += `%0A%0ANama: ${name}`;
-          text += `%0AAlamat: ${addr}, ${city}`;
-          text += `%0ANo WA: ${phone}`;
+          text += `\nTotal: ${
+            document.getElementById("cart-total").textContent
+          }`;
+          text += `\n\nNama: ${name}\nAlamat: ${addr}, ${city}\nNo WA: ${phone}`;
 
-          // STRUK
-          const today = new Date();
-
-          document.getElementById(
-            "receipt-content"
-          ).innerHTML = `
-            <div class="space-y-2">
-
-              <div>
-                <strong>Nama:</strong> ${name}
-              </div>
-
-              <div>
-                <strong>Alamat:</strong>
-                ${addr}, ${city}
-              </div>
-
-              <div>
-                <strong>No WA:</strong>
-                ${phone}
-              </div>
-
-              <div>
-                <strong>Tanggal:</strong>
-                ${today.toLocaleString("id-ID")}
-              </div>
-
-              <hr>
-
-              ${receiptItems}
-
-              <div class="flex justify-between font-bold text-lg pt-4">
-                <span>Total</span>
-                <span>${rupiah(total)}</span>
-              </div>
-
-            </div>
-          `;
-
-          document
-            .getElementById("modal-receipt")
-            .classList.remove("hidden");
-
-          document
-            .getElementById("modal-receipt")
-            .classList.add("flex");
-
-          // WA
-          window.open(
-            "https://wa.me/6285123615246?text=" + text,
-            "_blank"
-          );
-
-          // reset
-          cart = [];
-
-          updateCartUI();
-
-          modal.classList.add("hidden");
-
-          modal.classList.remove("flex");
-
-          e.target.reset();
+          const url =
+            "https://wa.me/6285123615246?text=" + encodeURIComponent(text);
+          window.open(url, "_blank");
         });
 
-      // ===========================
-      // CLOSE RECEIPT
-      // ===========================
+      // ===============================
+      // NAVBAR MOBILE
+      // ===============================
       document
-        .getElementById("close-receipt")
+        .getElementById("mobile-menu-btn")
         .addEventListener("click", () => {
-          document
-            .getElementById("modal-receipt")
-            .classList.add("hidden");
-
-          document
-            .getElementById("modal-receipt")
-            .classList.remove("flex");
+          document.getElementById("mobile-menu").classList.toggle("hidden");
         });
 
-      document
-        .getElementById("done-receipt")
-        .addEventListener("click", () => {
-          document
-            .getElementById("modal-receipt")
-            .classList.add("hidden");
+      document.getElementById("close-cart").addEventListener("click", () => {
+        document.getElementById("cart-drawer").style.transform =
+          "translateY(24rem)";
+      });
 
-          document
-            .getElementById("modal-receipt")
-            .classList.remove("flex");
-        });
-
-      // ===========================
-      // FILTER
-      // ===========================
-      document
-        .getElementById("filter")
-        .addEventListener("change", (e) => {
-          renderProducts(e.target.value);
-        });
-
-      // ===========================
-      // CLOSE CART
-      // ===========================
-      document
-        .getElementById("close-cart")
-        .addEventListener("click", () => {
-          document.getElementById(
-            "cart-drawer"
-          ).style.transform = "translateY(24rem)";
-        });
-
-      // INIT
+      // init
       renderProducts();
+
+      document.getElementById("filter").addEventListener("change", (e) => {
+        renderProducts(e.target.value);
+      });
     </script>
   </body>
 </html>
