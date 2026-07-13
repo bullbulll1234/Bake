@@ -16,20 +16,56 @@
     <meta property="og:image" content="images/logo.jpg" />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
-    <!-- Tailwind via CDN (production-ready setup would use npm/build) -->
+
+    <!-- Structured data untuk SEO toko lokal -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Bakery",
+        "name": "Bean'S Bake",
+        "image": "images/logo.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Perumahan Puri Delta Angsana blok BE 07"
+        },
+        "telephone": "+6285123615246",
+        "openingHours": "Mo-Su 08:00-18:00",
+        "sameAs": [
+          "https://instagram.com/bakery.auz",
+          "https://tiktok.com/@bakery.auzz"
+        ]
+      }
+    </script>
+
+    <!-- Tailwind via CDN (untuk production sebaiknya build lewat CLI/PostCSS agar CSS lebih ringkas dan tidak bergantung ke CDN eksternal) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* small custom styles */
       .card-img {
         height: 220px;
         object-fit: cover;
+        background-color: #eee;
       }
       .hero-bg {
         background-image: linear-gradient(
           90deg,
-          rgba(200, 200, 200, 0.95),
-          rgba(220, 220, 220, 0.6)
+          rgba(120, 90, 60, 0.85),
+          rgba(90, 60, 40, 0.75)
         );
+      }
+      /* fallback visual kalau gambar gagal dimuat */
+      img.img-fallback {
+        object-fit: contain;
+        padding: 1.5rem;
+        background: #f3f0ee;
+      }
+      /* fokus terlihat jelas untuk aksesibilitas keyboard */
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible,
+      select:focus-visible {
+        outline: 2px solid #d2691e;
+        outline-offset: 2px;
       }
     </style>
   </head>
@@ -48,8 +84,8 @@
       style="
         background: linear-gradient(
           to bottom,
-          rgba(200, 200, 200, 0.95),
-          rgba(220, 220, 220, 0.6)
+          rgba(200, 200, 200, 0.98),
+          rgba(220, 220, 220, 0.9)
         );
       "
     >
@@ -59,7 +95,7 @@
             <a href="#" class="flex items-center gap-2">
               <img
                 src="images/logo.jpg"
-                alt=""
+                alt="Logo Bean'S Bake"
                 class="w-10 h-10 rounded-full object-cover"
               />
               <span class="font-semibold text-xl text-[#8b4513]"
@@ -69,16 +105,17 @@
           </div>
 
           <nav class="hidden md:flex items-center gap-6 text-sm">
-            <a href="#produk" class="hover:text-white text-white">Produk</a>
-            <a href="#tentang" class="hover:text-white text-white">Tentang</a>
-            <a href="#kontak" class="hover:text-white text-white">Kontak</a>
-            <button id="btn-cart" class="relative">
+            <a href="#produk" class="hover:text-[#d2691e] text-[#5c3a21] font-medium">Produk</a>
+            <a href="#tentang" class="hover:text-[#d2691e] text-[#5c3a21] font-medium">Tentang</a>
+            <a href="#kontak" class="hover:text-[#d2691e] text-[#5c3a21] font-medium">Kontak</a>
+            <button id="btn-cart" class="relative" aria-label="Buka keranjang belanja">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6 text-[#8b4513]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -96,13 +133,14 @@
           </nav>
 
           <div class="md:hidden">
-            <button id="mobile-menu-btn" aria-label="menu">
+            <button id="mobile-menu-btn" aria-label="Buka menu navigasi" aria-expanded="false">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-7 w-7 text-[#8b4513]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
@@ -117,22 +155,21 @@
       </div>
 
       <!-- Mobile menu -->
-      <div id="mobile-menu" class="hidden md:hidden border-t">
+      <div id="mobile-menu" class="hidden md:hidden border-t bg-white/90">
         <div class="px-4 py-3 space-y-2">
-          <a href="#produk" class="block">Produk</a>
-          <a href="#tentang" class="block">Tentang</a>
-          <a href="#kontak" class="block">Kontak</a>
+          <a href="#produk" class="block text-[#5c3a21] font-medium">Produk</a>
+          <a href="#tentang" class="block text-[#5c3a21] font-medium">Tentang</a>
+          <a href="#kontak" class="block text-[#5c3a21] font-medium">Kontak</a>
         </div>
       </div>
     </header>
+
     <!-- HERO -->
     <section class="hero-bg relative py-20">
-      <!-- overlay untuk kontras -->
       <div class="absolute inset-0 bg-black/40"></div>
 
       <div class="relative max-w-6xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <!-- TEXT -->
           <div class="text-center md:text-left">
             <h1
               class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg leading-tight"
@@ -150,7 +187,6 @@
             <div
               class="mt-8 flex flex-wrap justify-center md:justify-start gap-4"
             >
-              <!-- Tombol Lihat Produk -->
               <a
                 href="#produk"
                 class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-100 hover:scale-105 transition transform duration-200"
@@ -158,7 +194,6 @@
                 Lihat Produk
               </a>
 
-              <!-- Tombol Hubungi Kami -->
               <a
                 href="#kontak"
                 class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-100 hover:scale-105 transition transform duration-200"
@@ -168,11 +203,10 @@
             </div>
           </div>
 
-          <!-- IMAGE (opsional) -->
           <div class="hidden md:block">
             <img
               src="images/logo.jpg"
-              alt="cookies hero"
+              alt="Logo Bean'S Bake"
               class="rounded-xl shadow-lg w-48 h-auto mx-auto"
             />
           </div>
@@ -184,8 +218,9 @@
     <section id="produk" class="max-w-6xl mx-auto px-4 py-12">
       <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <h2 class="text-2xl font-bold text-[#8b4513]">Pilihan Menu</h2>
-        <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
           <div class="relative">
+            <label for="search" class="sr-only">Cari menu</label>
             <input
               id="search"
               type="text"
@@ -198,6 +233,7 @@
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 stroke-linecap="round"
@@ -207,8 +243,17 @@
               />
             </svg>
           </div>
+          <label for="category" class="sr-only">Filter kategori</label>
+          <select id="category" class="border rounded px-3 py-2 text-sm">
+            <option value="all">Semua Kategori</option>
+            <option value="Cookies">Cookies</option>
+            <option value="Brownies">Brownies</option>
+            <option value="Pizza">Pizza</option>
+            <option value="Bundling">Bundling</option>
+          </select>
+          <label for="filter" class="sr-only">Filter tag</label>
           <select id="filter" class="border rounded px-3 py-2 text-sm">
-            <option value="all">Semua</option>
+            <option value="all">Semua Tag</option>
             <option value="best">Best Seller</option>
             <option value="new">Baru</option>
           </select>
@@ -275,8 +320,9 @@
         <div>
           <img
             src="images/bake.jpg"
-            alt="about"
+            alt="Suasana dapur dan proses pembuatan kue Bean'S Bake"
             class="rounded-lg shadow-md border-2 border-gray-400"
+            onerror="this.onerror=null;this.src='https://via.placeholder.com/600x400?text=Bean%27S+Bake';this.classList.add('img-fallback')"
           />
         </div>
       </div>
@@ -296,7 +342,6 @@
       "
     >
       <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6">
-        <!-- Profil -->
         <div>
           <h4 class="font-semibold text-lg text-gray-800">Bean'S Bake</h4>
           <p class="text-sm mt-2 leading-relaxed text-gray-700">
@@ -305,7 +350,6 @@
           </p>
         </div>
 
-        <!-- Cara Pesan -->
         <div>
           <h4 class="font-semibold text-lg text-gray-800">Cara Pesan</h4>
           <p class="text-sm mt-2 leading-relaxed text-gray-700">
@@ -314,30 +358,30 @@
           </p>
         </div>
 
-        <!-- Kontak -->
         <div>
           <h4 class="font-semibold text-lg text-gray-800">Kontak</h4>
           <p class="text-sm mt-2 text-gray-700">
             WA:
             <a
-              class="underline hover:text-gray-900 transition"
+              class="underline hover:text-gray-900 transition wa-link"
               href="https://wa.me/6285123615246"
               target="_blank"
+              rel="noopener noreferrer"
             >
               +62 851-2361-5246
             </a>
           </p>
         </div>
 
-        <!-- Ikuti Kami -->
         <div>
           <h4 class="font-semibold text-lg text-gray-800">Ikuti Kami</h4>
           <div class="flex items-center gap-4 mt-3">
-            <!-- Instagram -->
             <a
               href="https://instagram.com/bakery.auz"
               target="_blank"
+              rel="noopener noreferrer"
               class="hover:opacity-80 transition"
+              aria-label="Instagram Bean'S Bake"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -346,6 +390,7 @@
                 fill="currentColor"
                 class="text-gray-800"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 2c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3zm4.5-.8c-.4 0-.8.3-.8.8s.3.8.8.8.8-.3.8-.8-.4-.8-.8-.8z"
@@ -353,11 +398,12 @@
               </svg>
             </a>
 
-            <!-- TikTok -->
             <a
               href="https://tiktok.com/@bakery.auzz"
               target="_blank"
+              rel="noopener noreferrer"
               class="hover:opacity-80 transition"
+              aria-label="TikTok Bean'S Bake"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -366,6 +412,7 @@
                 fill="currentColor"
                 class="text-gray-800"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   d="M12.75 2h3.19c.22 1.6 1.39 2.94 2.95 3.36v3.2c-1.17-.03-2.29-.37-3.25-.98v6.42c0 3.2-2.6 5.8-5.8 5.8S4 17.2 4 14s2.6-5.8 5.8-5.8c.33 0 .65.03.96.1v3.3c-.3-.12-.63-.18-.96-.18-1.34 0-2.43 1.1-2.43 2.46s1.1 2.46 2.43 2.46 2.43-1.1 2.43-2.46V2z"
@@ -380,18 +427,21 @@
         class="text-center text-sm py-3"
         style="background: rgba(200, 200, 200, 0.5); color: #333"
       >
-        © 2026 Bean'S Bake-
+        © 2026 Bean'S Bake
       </div>
     </footer>
 
     <!-- CART DRAWER -->
     <div
       id="cart-drawer"
-      class="fixed right-4 bottom-6 w-96 bg-white rounded-lg shadow-xl transform translate-y-96 transition-transform duration-300"
+      class="fixed right-4 bottom-6 w-[92vw] sm:w-96 bg-white rounded-lg shadow-xl transition-transform duration-300"
+      style="transform: translateY(150%)"
+      role="dialog"
+      aria-label="Keranjang belanja"
     >
       <div class="p-4 border-b flex justify-between items-center">
         <h4 class="font-semibold">Keranjang</h4>
-        <button id="close-cart">Tutup</button>
+        <button id="close-cart" aria-label="Tutup keranjang">Tutup</button>
       </div>
       <div id="cart-items" class="p-4 space-y-3 max-h-64 overflow-auto"></div>
       <div class="p-4 border-t">
@@ -402,7 +452,7 @@
         <div class="mt-3">
           <button
             id="checkout-btn"
-            class="w-full px-4 py-2 bg-[#d2691e] text-white rounded"
+            class="w-full px-4 py-2 bg-[#d2691e] text-white rounded hover:bg-[#b85717] transition"
           >
             Checkout
           </button>
@@ -413,25 +463,30 @@
     <!-- MODAL CHECKOUT -->
     <div
       id="modal-checkout"
-      class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center"
+      class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="checkout-title"
     >
       <div class="bg-white rounded-lg w-full max-w-xl p-6">
         <div class="flex justify-between items-center">
-          <h3 class="font-semibold text-lg">Form Checkout</h3>
-          <button id="close-checkout">✕</button>
+          <h3 id="checkout-title" class="font-semibold text-lg">Form Checkout</h3>
+          <button id="close-checkout" aria-label="Tutup form checkout">✕</button>
         </div>
-        <form id="checkout-form" class="mt-4 space-y-3">
+        <form id="checkout-form" class="mt-4 space-y-3" novalidate>
           <div>
-            <label class="text-sm">Nama</label>
+            <label for="cf-name" class="text-sm">Nama</label>
             <input
+              id="cf-name"
               name="name"
               required
               class="w-full border px-3 py-2 rounded"
             />
           </div>
           <div>
-            <label class="text-sm">Alamat</label>
+            <label for="cf-address" class="text-sm">Alamat</label>
             <textarea
+              id="cf-address"
               name="address"
               required
               class="w-full border px-3 py-2 rounded"
@@ -439,26 +494,35 @@
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="text-sm">Kota</label>
+              <label for="cf-city" class="text-sm">Kota</label>
               <input
+                id="cf-city"
                 name="city"
                 required
                 class="w-full border px-3 py-2 rounded"
               />
             </div>
             <div>
-              <label class="text-sm">No. HP (WA)</label>
+              <label for="cf-phone" class="text-sm">No. HP (WA)</label>
               <input
+                id="cf-phone"
                 name="phone"
+                type="tel"
                 required
+                pattern="^(\+62|62|0)8[0-9]{8,12}$"
+                title="Masukkan nomor HP Indonesia yang valid, contoh: 081234567890"
+                placeholder="08xxxxxxxxxx"
                 class="w-full border px-3 py-2 rounded"
               />
+              <p id="phone-error" class="hidden text-xs text-red-600 mt-1">
+                Format nomor HP tidak valid.
+              </p>
             </div>
           </div>
           <div class="flex gap-2">
             <button
               type="submit"
-              class="px-4 py-2 bg-[#d2691e] text-white rounded"
+              class="px-4 py-2 bg-[#d2691e] text-white rounded hover:bg-[#b85717] transition"
             >
               Konfirmasi & Kirim WA
             </button>
@@ -474,13 +538,47 @@
       </div>
     </div>
 
+    <!-- MODAL DETAIL PRODUK (pengganti alert()) -->
+    <div
+      id="modal-detail"
+      class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center p-4 z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="detail-title"
+    >
+      <div class="bg-white rounded-lg w-full max-w-md overflow-hidden">
+        <img id="detail-img" src="" alt="" class="w-full h-56 object-cover" />
+        <div class="p-6">
+          <div class="flex justify-between items-start">
+            <h3 id="detail-title" class="font-semibold text-lg text-[#8b4513]"></h3>
+            <button id="close-detail" aria-label="Tutup detail produk">✕</button>
+          </div>
+          <p id="detail-desc" class="text-sm text-gray-600 mt-2"></p>
+          <div class="flex justify-between items-center mt-4">
+            <div id="detail-price" class="font-semibold"></div>
+            <button
+              id="detail-add"
+              class="px-4 py-2 bg-[#d2691e] text-white rounded hover:bg-[#b85717] transition"
+            >
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Central WhatsApp number so it only needs updating in one place -->
+    <script>
+      const WA_NUMBER = "6285123615246";
+    </script>
+
     <!-- SCRIPTS -->
     <script>
       // ===============================
       // DATA PRODUK
       // ===============================
       const PRODUCTS = [
-         {
+        {
           id: 1,
           name: "Dubai Chewy Cookie",
           price: 20000,
@@ -489,7 +587,7 @@
           category: "Cookies",
           desc: "Chewy cookie premium dengan tekstur lembut dan rasa khas ala Dubai.",
         },
-         {
+        {
           id: 2,
           name: "Scoopable Cookie Choco Pistachio",
           price: 12000,
@@ -660,31 +758,63 @@
           category: "Brownies",
           desc: "Brownies cup empuk dan nikmat, Harga Yang Tertera, Harga 1 Cup.",
         },
-      
       ];
+
+      // ===============================
+      // UTIL: escape untuk cegah XSS dari data teks
+      // ===============================
+      function escapeHTML(str) {
+        const div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+      }
 
       // ===============================
       // STATE & HELPERS
       // ===============================
       let cart = [];
 
+      function loadCart() {
+        try {
+          const saved = localStorage.getItem("beansbake_cart");
+          cart = saved ? JSON.parse(saved) : [];
+        } catch (e) {
+          cart = [];
+        }
+      }
+
+      function saveCart() {
+        try {
+          localStorage.setItem("beansbake_cart", JSON.stringify(cart));
+        } catch (e) {
+          /* localStorage tidak tersedia, cart tetap jalan di memori */
+        }
+      }
+
       const rupiah = (n) =>
         "Rp" + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
+      function imgFallbackAttr() {
+        return `onerror="this.onerror=null;this.src='https://via.placeholder.com/300x220?text=Bean%27S+Bake';this.classList.add('img-fallback')"`;
+      }
+
       // ===============================
-      // RENDER PRODUK (grid biasa + search + filter)
+      // RENDER PRODUK (grid + search + filter tag + filter kategori)
       // ===============================
-      function renderProducts(filter = "all", query = "") {
+      function renderProducts() {
         const container = document.getElementById("list-products");
         const noResult = document.getElementById("no-result");
         container.innerHTML = "";
 
-        const q = query.trim().toLowerCase();
+        const tagFilter = document.getElementById("filter").value;
+        const catFilter = document.getElementById("category").value;
+        const q = document.getElementById("search").value.trim().toLowerCase();
 
         const list = PRODUCTS.filter((p) => {
-          const matchFilter = filter === "all" ? true : p.tags.includes(filter);
+          const matchTag = tagFilter === "all" ? true : p.tags.includes(tagFilter);
+          const matchCategory = catFilter === "all" ? true : p.category === catFilter;
           const matchSearch = q === "" ? true : p.name.toLowerCase().includes(q);
-          return matchFilter && matchSearch;
+          return matchTag && matchCategory && matchSearch;
         });
 
         noResult.classList.toggle("hidden", list.length > 0);
@@ -694,26 +824,21 @@
           card.className = "bg-white rounded-lg shadow p-4";
 
           card.innerHTML = `
-        <img src="${p.img}" class="w-full rounded card-img">
-        <h4 class="mt-3 font-semibold text-[#8b4513]">${p.name}</h4>
-        <p class="text-sm text-gray-600">${p.desc}</p>
+        <img src="${escapeHTML(p.img)}" alt="${escapeHTML(p.name)}" class="w-full rounded card-img" loading="lazy" ${imgFallbackAttr()}>
+        <h4 class="mt-3 font-semibold text-[#8b4513]">${escapeHTML(p.name)}</h4>
+        <p class="text-sm text-gray-600">${escapeHTML(p.desc)}</p>
 
         <div class="mt-3 flex justify-between items-center">
           <div class="font-semibold">${rupiah(p.price)}</div>
           <div class="flex gap-2">
-            <button data-id="${
-              p.id
-            }" class="btn-add px-3 py-1 border rounded text-sm">Tambah</button>
-            <button data-id="${
-              p.id
-            }" class="btn-detail px-3 py-1 bg-[#d2691e] text-white rounded text-sm">Detail</button>
+            <button data-id="${p.id}" class="btn-add px-3 py-1 border rounded text-sm hover:bg-gray-50">Tambah</button>
+            <button data-id="${p.id}" class="btn-detail px-3 py-1 bg-[#d2691e] text-white rounded text-sm hover:bg-[#b85717]">Detail</button>
           </div>
         </div>
       `;
           container.appendChild(card);
         });
 
-        // event add
         document
           .querySelectorAll(".btn-add")
           .forEach((btn) =>
@@ -722,7 +847,6 @@
             )
           );
 
-        // event detail
         document
           .querySelectorAll(".btn-detail")
           .forEach((btn) =>
@@ -732,10 +856,33 @@
           );
       }
 
+      // ===============================
+      // MODAL DETAIL (pengganti alert())
+      // ===============================
+      const detailModal = document.getElementById("modal-detail");
+      let currentDetailId = null;
+
       function showDetail(id) {
         const p = PRODUCTS.find((x) => x.id === id);
-        alert(`${p.name}\n\n${p.desc}\nHarga: ${rupiah(p.price)}`);
+        if (!p) return;
+        currentDetailId = id;
+        document.getElementById("detail-img").src = p.img;
+        document.getElementById("detail-img").alt = p.name;
+        document.getElementById("detail-img").setAttribute(
+          "onerror",
+          "this.onerror=null;this.src='https://via.placeholder.com/400x220?text=Bean%27S+Bake';this.classList.add('img-fallback')"
+        );
+        document.getElementById("detail-title").textContent = p.name;
+        document.getElementById("detail-desc").textContent = p.desc;
+        document.getElementById("detail-price").textContent = rupiah(p.price);
+        openModal(detailModal);
       }
+
+      document.getElementById("detail-add").addEventListener("click", () => {
+        if (currentDetailId !== null) addToCart(currentDetailId);
+        closeModal(detailModal);
+      });
+      document.getElementById("close-detail").addEventListener("click", () => closeModal(detailModal));
 
       // ===============================
       // CART FUNCTIONS
@@ -745,6 +892,7 @@
         if (found) found.qty++;
         else cart.push({ id, qty: 1 });
 
+        saveCart();
         updateCartUI();
       }
 
@@ -756,11 +904,13 @@
         if (item.qty <= 0) {
           cart = cart.filter((c) => c.id !== id);
         }
+        saveCart();
         updateCartUI();
       }
 
       function removeItem(id) {
         cart = cart.filter((c) => c.id !== id);
+        saveCart();
         updateCartUI();
       }
 
@@ -776,6 +926,7 @@
 
         cart.forEach((ci) => {
           const p = PRODUCTS.find((x) => x.id === ci.id);
+          if (!p) return;
           total += p.price * ci.qty;
 
           const row = document.createElement("div");
@@ -783,31 +934,25 @@
 
           row.innerHTML = `
         <div class="flex items-center gap-3">
-          <img src="${p.img}" class="w-12 h-12 rounded object-cover">
+          <img src="${escapeHTML(p.img)}" alt="${escapeHTML(p.name)}" class="w-12 h-12 rounded object-cover" ${imgFallbackAttr()}>
           <div>
-            <div class="text-sm font-medium">${p.name}</div>
-            <div class="text-xs text-gray-500">${rupiah(p.price)} x ${
-            ci.qty
-          }</div>
+            <div class="text-sm font-medium">${escapeHTML(p.name)}</div>
+            <div class="text-xs text-gray-500">${rupiah(p.price)} x ${ci.qty}</div>
           </div>
         </div>
 
         <div class="flex gap-2">
-          <button class="btn-decrease px-2 border" data-id="${ci.id}">-</button>
-          <button class="btn-increase px-2 border" data-id="${ci.id}">+</button>
-          <button class="btn-remove px-2 border" data-id="${
-            ci.id
-          }">Hapus</button>
+          <button class="btn-decrease px-2 border" data-id="${ci.id}" aria-label="Kurangi jumlah ${escapeHTML(p.name)}">-</button>
+          <button class="btn-increase px-2 border" data-id="${ci.id}" aria-label="Tambah jumlah ${escapeHTML(p.name)}">+</button>
+          <button class="btn-remove px-2 border" data-id="${ci.id}" aria-label="Hapus ${escapeHTML(p.name)} dari keranjang">Hapus</button>
         </div>
       `;
           wrap.appendChild(row);
         });
 
         document.getElementById("cart-total").textContent = rupiah(total);
-        drawer.style.transform =
-          cart.length > 0 ? "translateY(0)" : "translateY(24rem)";
+        drawer.style.transform = cart.length > 0 ? "translateY(0)" : "translateY(150%)";
 
-        // events
         document
           .querySelectorAll(".btn-decrease")
           .forEach((btn) =>
@@ -832,26 +977,79 @@
       }
 
       // ===============================
+      // MODAL HELPERS (focus trap + Esc to close)
+      // ===============================
+      let lastFocusedEl = null;
+
+      function openModal(modal) {
+        lastFocusedEl = document.activeElement;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        const focusable = modal.querySelector("input, textarea, select, button");
+        if (focusable) focusable.focus();
+        document.addEventListener("keydown", trapFocus);
+      }
+
+      function closeModal(modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        document.removeEventListener("keydown", trapFocus);
+        if (lastFocusedEl) lastFocusedEl.focus();
+      }
+
+      function trapFocus(e) {
+        const openModalEl = document.querySelector('[role="dialog"]:not(.hidden)');
+        if (!openModalEl) return;
+
+        if (e.key === "Escape") {
+          closeModal(openModalEl);
+          return;
+        }
+
+        if (e.key !== "Tab") return;
+        const focusables = openModalEl.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+
+      // ===============================
       // CHECKOUT
       // ===============================
-      const modal = document.getElementById("modal-checkout");
+      const checkoutModal = document.getElementById("modal-checkout");
 
       document.getElementById("checkout-btn").addEventListener("click", () => {
         if (cart.length === 0) return alert("Keranjang masih kosong!");
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
+        openModal(checkoutModal);
       });
 
       document.getElementById("close-checkout").onclick =
-        document.getElementById("cancel-checkout").onclick = () => {
-          modal.classList.add("hidden");
-          modal.classList.remove("flex");
-        };
+        document.getElementById("cancel-checkout").onclick = () => closeModal(checkoutModal);
 
       document
         .getElementById("checkout-form")
         .addEventListener("submit", (e) => {
           e.preventDefault();
+
+          const phoneInput = document.getElementById("cf-phone");
+          const phoneError = document.getElementById("phone-error");
+
+          if (!e.target.checkValidity()) {
+            phoneError.classList.toggle("hidden", phoneInput.validity.valid);
+            e.target.reportValidity();
+            return;
+          }
+          phoneError.classList.add("hidden");
 
           const f = new FormData(e.target);
           const name = f.get("name");
@@ -863,45 +1061,61 @@
 
           cart.forEach((c) => {
             const p = PRODUCTS.find((x) => x.id === c.id);
+            if (!p) return;
             text += `• ${p.name} (${c.qty} pcs) — ${rupiah(p.price * c.qty)}\n`;
           });
 
-          text += `\nTotal: ${
-            document.getElementById("cart-total").textContent
-          }`;
+          text += `\nTotal: ${document.getElementById("cart-total").textContent}`;
           text += `\n\nNama: ${name}\nAlamat: ${addr}, ${city}\nNo WA: ${phone}`;
 
-          const url =
-            "https://wa.me/6285123615246?text=" + encodeURIComponent(text);
-          window.open(url, "_blank");
+          const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
+          window.open(url, "_blank", "noopener,noreferrer");
+
+          closeModal(checkoutModal);
+          cart = [];
+          saveCart();
+          updateCartUI();
+          e.target.reset();
         });
 
       // ===============================
       // NAVBAR MOBILE
       // ===============================
-      document
-        .getElementById("mobile-menu-btn")
-        .addEventListener("click", () => {
-          document.getElementById("mobile-menu").classList.toggle("hidden");
-        });
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      mobileMenuBtn.addEventListener("click", () => {
+        const isOpen = !mobileMenu.classList.contains("hidden");
+        mobileMenu.classList.toggle("hidden");
+        mobileMenuBtn.setAttribute("aria-expanded", String(!isOpen));
+      });
+
+      // tutup menu mobile otomatis saat link diklik
+      mobileMenu.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden");
+          mobileMenuBtn.setAttribute("aria-expanded", "false");
+        })
+      );
 
       document.getElementById("close-cart").addEventListener("click", () => {
-        document.getElementById("cart-drawer").style.transform =
-          "translateY(24rem)";
+        document.getElementById("cart-drawer").style.transform = "translateY(150%)";
       });
 
-      // init
+      document.getElementById("btn-cart").addEventListener("click", () => {
+        document.getElementById("cart-drawer").style.transform = "translateY(0)";
+      });
+
+      // ===============================
+      // INIT
+      // ===============================
+      loadCart();
       renderProducts();
+      updateCartUI();
 
-      document.getElementById("filter").addEventListener("change", (e) => {
-        const query = document.getElementById("search").value;
-        renderProducts(e.target.value, query);
-      });
-
-      document.getElementById("search").addEventListener("input", (e) => {
-        const filter = document.getElementById("filter").value;
-        renderProducts(filter, e.target.value);
-      });
+      document.getElementById("filter").addEventListener("change", renderProducts);
+      document.getElementById("category").addEventListener("change", renderProducts);
+      document.getElementById("search").addEventListener("input", renderProducts);
     </script>
   </body>
 </html>
