@@ -170,9 +170,31 @@
 
     <!-- PRODUCTS -->
     <section id="produk" class="max-w-6xl mx-auto px-4 py-12">
-      <div class="flex justify-between items-center">
+      <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <h2 class="text-2xl font-bold text-[#8b4513]">Pilihan Menu</h2>
-        <div>
+        <div class="flex gap-3">
+          <div class="relative">
+            <input
+              id="search"
+              type="text"
+              placeholder="Cari menu..."
+              class="border rounded px-3 py-2 text-sm pl-9 w-full sm:w-56"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.35 6.35a7.5 7.5 0 0 0 10.3 10.3z"
+              />
+            </svg>
+          </div>
           <select id="filter" class="border rounded px-3 py-2 text-sm">
             <option value="all">Semua</option>
             <option value="best">Best Seller</option>
@@ -180,6 +202,10 @@
           </select>
         </div>
       </div>
+
+      <p id="no-result" class="hidden mt-6 text-center text-gray-500 text-sm">
+        Menu tidak ditemukan.
+      </p>
 
       <div
         id="list-products"
@@ -448,6 +474,7 @@
           price: 20000,
           img: "images/produk/dubai.jpg",
           tags: ["new"],
+          category: "Cookies",
           desc: "Chewy cookie premium dengan tekstur lembut dan rasa khas ala Dubai.",
         },
          {
@@ -456,6 +483,7 @@
           price: 12000,
           img: "images/produk/pistachio.jpeg",
           tags: ["new"],
+          category: "Cookies",
           desc: "Scoopable Cookie Choco Pistachio Tanpa Kunafa.",
         },
         {
@@ -464,6 +492,7 @@
           price: 12000,
           img: "images/produk/classic og.jpeg",
           tags: ["new"],
+          category: "Cookies",
           desc: "Scoopable Cookie Classic Original Feeling Dark Choco.",
         },
         {
@@ -472,6 +501,7 @@
           price: 12000,
           img: "images/produk/keju.jpeg",
           tags: ["new"],
+          category: "Cookies",
           desc: "Scoopable Cookie Velvet Feeling Cheese.",
         },
         {
@@ -480,6 +510,7 @@
           price: 30000,
           img: "images/produk/bundling.jpeg",
           tags: ["new"],
+          category: "Bundling",
           desc: "1 Dubai Chewy Cookie dan 1 Scoopable Cookie Varian Classic Original.",
         },
         {
@@ -488,6 +519,7 @@
           price: 8000,
           img: "images/produk/oreo.jpg",
           tags: ["best"],
+          category: "Cookies",
           desc: "Renyah dengan lelehan cokelat premium.",
         },
         {
@@ -496,6 +528,7 @@
           price: 9000,
           img: "images/produk/matcha.jpg",
           tags: ["new"],
+          category: "Cookies",
           desc: "Lembut dengan cream cheese.",
         },
         {
@@ -504,6 +537,7 @@
           price: 8000,
           img: "images/produk/choco.jpg",
           tags: [],
+          category: "Cookies",
           desc: "Aroma matcha lembut dengan chocolate.",
         },
         {
@@ -512,6 +546,7 @@
           price: 10000,
           img: "images/produk/cookiekejucoklat.jpeg",
           tags: [],
+          category: "Cookies",
           desc: "Aroma matcha lembut dengan chocolate cheese.",
         },
         {
@@ -520,6 +555,7 @@
           price: 7000,
           img: "images/produk/doble.jpg",
           tags: ["best"],
+          category: "Cookies",
           desc: "Cokelat intens untuk pecinta cokelat.",
         },
         {
@@ -528,6 +564,7 @@
           price: 6000,
           img: "images/produk/monster.jpg",
           tags: [],
+          category: "Cookies",
           desc: "Cokelat intens untuk pecinta cokelat.",
         },
         {
@@ -536,6 +573,7 @@
           price: 7000,
           img: "images/produk/redcheese.jpg",
           tags: ["best"],
+          category: "Cookies",
           desc: "Cokelat intens untuk pecinta cokelat.",
         },
         {
@@ -544,6 +582,7 @@
           price: 8000,
           img: "images/produk/chococheesred.jpg",
           tags: ["best"],
+          category: "Cookies",
           desc: "Cokelat intens untuk pecinta cokelat.",
         },
         {
@@ -552,6 +591,7 @@
           price: 6000,
           img: "images/produk/redcookies.jpg",
           tags: [],
+          category: "Cookies",
           desc: "Cokelat intens untuk pecinta cokelat.",
         },
         {
@@ -560,6 +600,7 @@
           price: 6000,
           img: "images/produk/og.jpg",
           tags: [],
+          category: "Cookies",
           desc: "Cita rasa klasik yang disukai semua orang.",
         },
         {
@@ -568,6 +609,7 @@
           price: 6000,
           img: "images/produk/pizza.jpg",
           tags: [],
+          category: "Pizza",
           desc: "Pizza rumahan enak dan lembut.",
         },
         {
@@ -576,6 +618,7 @@
           price: 50000,
           img: "images/produk/brownies.jpg",
           tags: ["best"],
+          category: "Brownies",
           desc: "Brownies fudgy lembut premium.",
         },
         {
@@ -584,6 +627,7 @@
           price: 12000,
           img: "images/produk/bites.jpg",
           tags: [],
+          category: "Brownies",
           desc: "Brownies kecil enak.",
         },
         {
@@ -592,6 +636,7 @@
           price: 20000,
           img: "images/produk/bites.jpg",
           tags: ["best"],
+          category: "Brownies",
           desc: "Porsi lebih besar, lebih puas.",
         },
         {
@@ -600,6 +645,7 @@
           price: 10000,
           img: "images/produk/muffin.jpg",
           tags: ["best"],
+          category: "Brownies",
           desc: "Brownies cup empuk dan nikmat, Harga Yang Tertera, Harga 1 Cup.",
         },
       
@@ -614,15 +660,22 @@
         "Rp" + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
       // ===============================
-      // RENDER PRODUK
+      // RENDER PRODUK (grid biasa + search + filter)
       // ===============================
-      function renderProducts(filter = "all") {
+      function renderProducts(filter = "all", query = "") {
         const container = document.getElementById("list-products");
+        const noResult = document.getElementById("no-result");
         container.innerHTML = "";
 
-        const list = PRODUCTS.filter((p) =>
-          filter === "all" ? true : p.tags.includes(filter)
-        );
+        const q = query.trim().toLowerCase();
+
+        const list = PRODUCTS.filter((p) => {
+          const matchFilter = filter === "all" ? true : p.tags.includes(filter);
+          const matchSearch = q === "" ? true : p.name.toLowerCase().includes(q);
+          return matchFilter && matchSearch;
+        });
+
+        noResult.classList.toggle("hidden", list.length > 0);
 
         list.forEach((p) => {
           const card = document.createElement("div");
@@ -829,7 +882,13 @@
       renderProducts();
 
       document.getElementById("filter").addEventListener("change", (e) => {
-        renderProducts(e.target.value);
+        const query = document.getElementById("search").value;
+        renderProducts(e.target.value, query);
+      });
+
+      document.getElementById("search").addEventListener("input", (e) => {
+        const filter = document.getElementById("filter").value;
+        renderProducts(filter, e.target.value);
       });
     </script>
   </body>
