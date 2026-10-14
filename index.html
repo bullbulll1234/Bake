@@ -1,1300 +1,413 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bean'S Bake</title>
-    <meta
-      name="description"
-      content="Bean'S Bake - Dubai chewy cookie, scoopable cookie, brownies fudgy, dan soft cookie premium, fresh setiap hari tanpa pengawet. Pesan langsung via WhatsApp."
-    />
-    <meta property="og:title" content="Bean'S Bake" />
-    <meta
-      property="og:description"
-      content="Dubai chewy cookie, scoopable cookie, brownies, dan soft cookie premium, fresh setiap hari."
-    />
-    <meta property="og:image" content="images/logo.jpg" />
-    <meta property="og:type" content="website" />
-    <link rel="icon" type="image/jpeg" href="images/logo.jpg" />
-
-    <!-- Structured data untuk SEO toko lokal -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Bakery",
-        "name": "Bean'S Bake",
-        "image": "images/logo.jpg",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Perumahan Puri Delta Angsana blok BE 07"
-        },
-        "telephone": "+6285123615246",
-        "openingHours": "Mo-Su 08:00-18:00",
-        "sameAs": [
-          "https://instagram.com/bakery.auz",
-          "https://tiktok.com/@bakery.auzz"
-        ]
-      }
-    </script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Tailwind via CDN (untuk production sebaiknya build lewat CLI/PostCSS agar CSS lebih ringkas dan tidak bergantung ke CDN eksternal) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              cream: "#FBF3E6",
-              paper: "#F6E9D3",
-              espresso: "#3B2A1E",
-              caramel: "#C6793B",
-              pistachio: "#8DA05C",
-              berry: "#C15C6E",
-              gold: "#E3A857",
-            },
-            fontFamily: {
-              display: ["Fraunces", "serif"],
-              body: ["Work Sans", "sans-serif"],
-              mono: ["IBM Plex Mono", "monospace"],
-            },
-          },
-        },
-      };
-    </script>
-
-    <style>
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        background-color: #fbf3e6;
-        color: #3b2a1e;
-        font-family: "Work Sans", sans-serif;
-      }
-
-      /* ===== Choc-chip ambient texture, used sparingly on the hero ===== */
-      .choc-texture {
-        background-image: radial-gradient(
-            rgba(59, 42, 30, 0.35) 2px,
-            transparent 2.5px
-          ),
-          radial-gradient(rgba(59, 42, 30, 0.25) 1.5px, transparent 2px);
-        background-size: 34px 34px, 22px 22px;
-        background-position: 0 0, 12px 16px;
-      }
-
-      .hero-bg {
-        background-image: linear-gradient(
-          115deg,
-          rgba(59, 42, 30, 0.94),
-          rgba(198, 121, 59, 0.88)
-        );
-      }
-
-      /* ===== Signature: product photos get a little "bite" taken out ===== */
-      .card-img {
-        height: 220px;
-        object-fit: cover;
-        background-color: #eee;
-        -webkit-mask-image: radial-gradient(
-          circle 24px at calc(100% - 16px) 16px,
-          transparent 23px,
-          black 24px
-        );
-        mask-image: radial-gradient(
-          circle 24px at calc(100% - 16px) 16px,
-          transparent 23px,
-          black 24px
-        );
-      }
-      .card-img-wrap {
-        position: relative;
-      }
-      .card-img-wrap::after {
-        content: "";
-        position: absolute;
-        top: 6px;
-        right: 42px;
-        width: 6px;
-        height: 6px;
-        background: #c6793b;
-        border-radius: 50%;
-        box-shadow: 10px 14px 0 -1px #8da05c, 20px 4px 0 -1.5px #c15c6e;
-        opacity: 0.9;
-      }
-
-      /* fallback visual kalau gambar gagal dimuat */
-      img.img-fallback {
-        object-fit: contain;
-        padding: 1.5rem;
-        background: #f6e9d3;
-        -webkit-mask-image: none;
-        mask-image: none;
-      }
-
-      /* sticker-style tag badges */
-      .sticker {
-        font-family: "IBM Plex Mono", monospace;
-        font-size: 0.65rem;
-        letter-spacing: 0.03em;
-        transform: rotate(-4deg);
-        box-shadow: 0 2px 0 rgba(59, 42, 30, 0.15);
-      }
-
-      .product-card {
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-      }
-      .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px -8px rgba(59, 42, 30, 0.25);
-      }
-
-      /* fokus terlihat jelas untuk aksesibilitas keyboard */
-      a:focus-visible,
-      button:focus-visible,
-      input:focus-visible,
-      textarea:focus-visible,
-      select:focus-visible {
-        outline: 2px solid #c6793b;
-        outline-offset: 2px;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .product-card,
-        html {
-          transition: none !important;
-          scroll-behavior: auto !important;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- NAV -->
-    <header
-      class="shadow-sm sticky top-0 z-30 bg-cream/95 backdrop-blur border-b-2 border-dashed border-espresso/20"
-    >
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-          <div class="flex items-center gap-4">
-            <a href="#" class="flex items-center gap-2">
-              <img
-                src="images/logo.jpg"
-                alt="Logo Bean'S Bake"
-                class="w-10 h-10 rounded-full object-cover border-2 border-espresso/10"
-              />
-              <span class="font-display italic font-semibold text-xl text-caramel"
-                >Bean'S Bake</span
-              >
-            </a>
-          </div>
-
-          <nav class="hidden md:flex items-center gap-6 text-sm">
-            <a href="#produk" class="hover:text-caramel text-espresso font-medium">Produk</a>
-            <a href="#tentang" class="hover:text-caramel text-espresso font-medium">Tentang</a>
-            <a href="#kontak" class="hover:text-caramel text-espresso font-medium">Kontak</a>
-            <button id="btn-cart" class="relative" aria-label="Buka keranjang belanja">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 text-espresso"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4"
-                />
-              </svg>
-              <span
-                id="cart-count"
-                class="absolute -top-2 -right-3 bg-berry text-white text-xs px-1 rounded-full font-mono"
-                >0</span
-              >
-            </button>
-          </nav>
-
-          <div class="md:hidden">
-            <button id="mobile-menu-btn" aria-label="Buka menu navigasi" aria-expanded="false">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-7 w-7 text-espresso"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile menu -->
-      <div id="mobile-menu" class="hidden md:hidden border-t border-espresso/10 bg-cream/95">
-        <div class="px-4 py-3 space-y-2">
-          <a href="#produk" class="block text-espresso font-medium">Produk</a>
-          <a href="#tentang" class="block text-espresso font-medium">Tentang</a>
-          <a href="#kontak" class="block text-espresso font-medium">Kontak</a>
-        </div>
-      </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero-bg choc-texture relative py-20 overflow-hidden">
-      <div class="relative max-w-6xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <div class="text-center md:text-left">
-            <span
-              class="sticker inline-block bg-gold text-espresso px-3 py-1 rounded-sm font-semibold"
-              >FRESH SETIAP HARI</span
-            >
-            <h1
-              class="mt-4 font-display font-800 text-4xl md:text-5xl text-cream leading-tight"
-            >
-              Bean'S Bake<br /><span class="italic font-medium">— fresh from the heart</span>
-            </h1>
-
-            <p class="mt-6 text-cream/90 max-w-lg leading-relaxed font-body">
-              Dubai chewy cookie, scoopable cookie choco pistachio, brownies fudgy,
-              hingga soft cookie premium — semua dibuat dari resep pilihan, tanpa
-              pengawet, dan selalu fresh setiap hari.
-            </p>
-
-            <div
-              class="mt-8 flex flex-wrap justify-center md:justify-start gap-4"
-            >
-              <a
-                href="#produk"
-                class="px-6 py-3 bg-cream text-espresso font-semibold rounded-lg shadow-md hover:bg-white hover:scale-105 transition transform duration-200"
-              >
-                Lihat Produk
-              </a>
-
-              <a
-                href="#kontak"
-                class="px-6 py-3 border-2 border-cream text-cream font-semibold rounded-lg hover:bg-cream/10 hover:scale-105 transition transform duration-200"
-              >
-                Hubungi Kami
-              </a>
-            </div>
-          </div>
-
-          <div class="hidden md:flex justify-center">
-            <img
-              src="images/logo.jpg"
-              alt="Logo Bean'S Bake"
-              class="rounded-full shadow-lg w-44 h-44 object-cover border-4 border-cream/80"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRODUCTS -->
-    <section id="produk" class="max-w-6xl mx-auto px-4 py-14">
-      <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
-        <div>
-          <span class="font-mono text-xs tracking-widest text-caramel">MENU</span>
-          <h2 class="font-display font-800 text-3xl text-espresso">Pilihan Menu</h2>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <div class="relative">
-            <label for="search" class="sr-only">Cari menu</label>
-            <input
-              id="search"
-              type="text"
-              placeholder="Cari menu..."
-              class="border-2 border-espresso/15 bg-white rounded-lg px-3 py-2 text-sm pl-9 w-full sm:w-56 focus:border-caramel"
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 text-espresso/40 absolute left-3 top-1/2 -translate-y-1/2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.35 6.35a7.5 7.5 0 0 0 10.3 10.3z"
-              />
-            </svg>
-          </div>
-          <label for="category" class="sr-only">Filter kategori</label>
-          <select id="category" class="border-2 border-espresso/15 bg-white rounded-lg px-3 py-2 text-sm">
-            <option value="all">Semua Kategori</option>
-          </select>
-          <label for="filter" class="sr-only">Filter tag</label>
-          <select id="filter" class="border-2 border-espresso/15 bg-white rounded-lg px-3 py-2 text-sm">
-            <option value="all">Semua Tag</option>
-            <option value="best">Best Seller</option>
-            <option value="new">Baru</option>
-          </select>
-        </div>
-      </div>
-
-      <p id="no-result" class="hidden mt-10 text-center text-espresso/50 text-sm">
-        Menu tidak ditemukan.
-      </p>
-
-      <div
-        id="list-products"
-        class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
-      >
-        <!-- cards di-generate lewat JS -->
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="tentang" class="py-14 bg-paper/60 border-y-2 border-dashed border-espresso/15">
-      <div
-        class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-center"
-      >
-        <div>
-          <span class="font-mono text-xs tracking-widest text-caramel">TENTANG KAMI</span>
-          <h3 class="font-display font-800 text-2xl text-espresso mt-1">
-            Tentang Bean'S Bake
-          </h3>
-
-          <p class="mt-3 text-espresso/80 leading-relaxed">
-            Selamat datang di <strong>Bean'S Bake</strong>, rumah bagi aneka kue
-            dan cookies premium yang dibuat dengan sepenuh hati. Kami percaya
-            bahwa setiap gigitan kue bukan hanya soal rasa, tetapi juga tentang
-            momen-momen kecil yang menghadirkan kebahagiaan. <br /><br />
-            Karena itu, kami selalu menggunakan bahan pilihan, resep terbaik,
-            dan proses pembuatan yang higienis untuk menghasilkan cita rasa yang
-            konsisten, lembut, dan selalu bikin nagih. Setiap produk dibuat
-            <em>fresh</em> setiap hari, tanpa pengawet, dan dipanggang oleh tim
-            yang berpengalaman. <br /><br />
-            Kami hadir untuk menemani hari-harimu—mulai dari camilan santai di
-            rumah, hampers spesial untuk orang tersayang, hingga kebutuhan acara
-            kantor maupun perayaan besar.
-            <strong class="text-caramel">
-              Bean'S Bake: manis, hangat, dan siap membuat harimu lebih
-              istimewa.
-            </strong>
-          </p>
-
-          <ul class="mt-4 space-y-2 text-sm text-espresso/70">
-            <li>• Bahan import dan lokal berkualitas</li>
-            <li>• Tanpa pengawet</li>
-          </ul>
-        </div>
-
-        <div>
-          <img
-            src="images/bake.jpg"
-            alt="Suasana dapur dan proses pembuatan kue Bean'S Bake"
-            class="rounded-lg shadow-md border-2 border-espresso/15"
-            onerror="this.onerror=null;this.src='https://via.placeholder.com/600x400?text=Bean%27S+Bake';this.classList.add('img-fallback')"
-          />
-        </div>
-      </div>
-    </section>
-
-    <!-- METODE PEMBAYARAN -->
-    <section class="py-14">
-      <div class="max-w-6xl mx-auto px-4">
-        <div class="text-center">
-          <span class="font-mono text-xs tracking-widest text-caramel">CARA BAYAR</span>
-          <h3 class="font-display font-800 text-2xl text-espresso mt-1">
-            Metode Pembayaran
-          </h3>
-        </div>
-        <p class="text-center text-sm text-espresso/60 mt-2">
-          Pesanan bisa dibayar dengan salah satu cara berikut, dikonfirmasi
-          langsung lewat chat WhatsApp.
-        </p>
-
-        <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-          <div class="bg-white rounded-lg shadow p-5 text-center border border-espresso/10">
-            <div class="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-paper text-caramel font-mono font-semibold text-xs" aria-hidden="true">
-              TF
-            </div>
-            <h4 class="mt-3 font-medium text-espresso">Transfer Bank</h4>
-            <p class="text-sm text-espresso/60 mt-1">
-               Bayar praktis lewat GoPay, OVO, DANA, ShopeePay, dan e-wallet lainnya.— rekening dikirim setelah konfirmasi pesanan via WhatsApp.
-            </p>
-          </div>
-
-
-          <div class="bg-white rounded-lg shadow p-5 text-center border border-espresso/10">
-            <div class="mx-auto w-10 h-10 flex items-center justify-center rounded-full bg-paper text-caramel font-mono font-semibold text-xs" aria-hidden="true">
-              COD
-            </div>
-            <h4 class="mt-3 font-medium text-espresso">COD (Ambil Langsung)</h4>
-            <p class="text-sm text-espresso/60 mt-1">
-              Bayar tunai saat ambil pesanan di lokasi Bean'S Bake.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT & FOOTER -->
-    <footer id="kontak" class="mt-6 bg-espresso text-cream">
-      <div class="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6">
-        <div>
-          <h4 class="font-display font-semibold text-lg">Bean'S Bake</h4>
-          <p class="text-sm mt-2 leading-relaxed text-cream/70">
-            Perumahan Puri Delta Angsana blok BE 07<br />
-            Buka: 08.00 - 18.00
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-display font-semibold text-lg">Cara Pesan</h4>
-          <p class="text-sm mt-2 leading-relaxed text-cream/70">
-            Pilih produk → Tambah ke keranjang → Isi form checkout → Konfirmasi
-            via WhatsApp
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-display font-semibold text-lg">Kontak</h4>
-          <p class="text-sm mt-2 text-cream/70">
-            WA:
-            <a
-              class="underline hover:text-gold transition wa-link"
-              href="https://wa.me/6285123615246"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              +62 851-2361-5246
-            </a>
-          </p>
-        </div>
-
-        <div>
-          <h4 class="font-display font-semibold text-lg">Ikuti Kami</h4>
-          <div class="flex items-center gap-4 mt-3">
-            <a
-              href="https://instagram.com/bakery.auz"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hover:opacity-80 transition"
-              aria-label="Instagram Bean'S Bake"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                fill="currentColor"
-                class="text-cream"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.7 0 3 1.3 3 3v10c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V7c0-1.7 1.3-3 3-3h10zm-5 3c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm0 2c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3zm4.5-.8c-.4 0-.8.3-.8.8s.3.8.8.8.8-.3.8-.8-.4-.8-.8-.8z"
-                />
-              </svg>
-            </a>
-
-            <a
-              href="https://tiktok.com/@bakery.auzz"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hover:opacity-80 transition"
-              aria-label="TikTok Bean'S Bake"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                fill="currentColor"
-                class="text-cream"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12.75 2h3.19c.22 1.6 1.39 2.94 2.95 3.36v3.2c-1.17-.03-2.29-.37-3.25-.98v6.42c0 3.2-2.6 5.8-5.8 5.8S4 17.2 4 14s2.6-5.8 5.8-5.8c.33 0 .65.03.96.1v3.3c-.3-.12-.63-.18-.96-.18-1.34 0-2.43 1.1-2.43 2.46s1.1 2.46 2.43 2.46 2.43-1.1 2.43-2.46V2z"
-                />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center text-sm py-3 bg-black/20 text-cream/70">
-        © 2026 Bean'S Bake
-      </div>
-    </footer>
-
-    <!-- CART DRAWER -->
-    <div
-      id="cart-drawer"
-      class="fixed right-4 bottom-6 w-[92vw] sm:w-96 bg-white rounded-lg shadow-xl transition-transform duration-300 border-2 border-espresso/10"
-      style="transform: translateY(150%)"
-      role="dialog"
-      aria-label="Keranjang belanja"
-    >
-      <div class="p-4 border-b border-espresso/10 flex justify-between items-center">
-        <h4 class="font-display font-semibold text-espresso">Keranjang</h4>
-        <button id="close-cart" aria-label="Tutup keranjang" class="text-espresso/60 hover:text-espresso">Tutup</button>
-      </div>
-      <div id="cart-items" class="p-4 space-y-3 max-h-64 overflow-auto"></div>
-      <div class="p-4 border-t border-espresso/10">
-        <div class="flex justify-between items-center">
-          <div class="font-semibold text-espresso">Total</div>
-          <div id="cart-total" class="font-mono text-espresso">Rp0</div>
-        </div>
-        <div class="mt-3">
-          <button
-            id="checkout-btn"
-            class="w-full px-4 py-2 bg-caramel text-white rounded-lg hover:bg-espresso transition"
-          >
-            Checkout
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL CHECKOUT -->
-    <div
-      id="modal-checkout"
-      class="fixed inset-0 bg-espresso/50 hidden items-center justify-center p-4 z-50"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="checkout-title"
-    >
-      <div class="bg-cream rounded-lg w-full max-w-xl p-6 border-2 border-espresso/10">
-        <div class="flex justify-between items-center">
-          <h3 id="checkout-title" class="font-display font-semibold text-lg text-espresso">Form Checkout</h3>
-          <button id="close-checkout" aria-label="Tutup form checkout" class="text-espresso/60 hover:text-espresso">✕</button>
-        </div>
-        <form id="checkout-form" class="mt-4 space-y-3" novalidate>
-          <div>
-            <label for="cf-name" class="text-sm text-espresso/80">Nama</label>
-            <input
-              id="cf-name"
-              name="name"
-              required
-              class="w-full border-2 border-espresso/15 bg-white px-3 py-2 rounded-lg"
-            />
-          </div>
-          <div>
-            <label for="cf-address" class="text-sm text-espresso/80">Alamat</label>
-            <textarea
-              id="cf-address"
-              name="address"
-              required
-              class="w-full border-2 border-espresso/15 bg-white px-3 py-2 rounded-lg"
-            ></textarea>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label for="cf-city" class="text-sm text-espresso/80">Kota</label>
-              <input
-                id="cf-city"
-                name="city"
-                required
-                class="w-full border-2 border-espresso/15 bg-white px-3 py-2 rounded-lg"
-              />
-            </div>
-            <div>
-              <label for="cf-phone" class="text-sm text-espresso/80">No. HP (WA)</label>
-              <input
-                id="cf-phone"
-                name="phone"
-                type="tel"
-                required
-                pattern="^(\+62|62|0)8[0-9]{8,12}$"
-                title="Masukkan nomor HP Indonesia yang valid, contoh: 081234567890"
-                placeholder="08xxxxxxxxxx"
-                class="w-full border-2 border-espresso/15 bg-white px-3 py-2 rounded-lg"
-              />
-              <p id="phone-error" class="hidden text-xs text-berry mt-1">
-                Format nomor HP tidak valid.
-              </p>
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <button
-              type="submit"
-              class="px-4 py-2 bg-caramel text-white rounded-lg hover:bg-espresso transition"
-            >
-              Konfirmasi & Kirim WA
-            </button>
-            <button
-              type="button"
-              id="cancel-checkout"
-              class="px-4 py-2 border-2 border-espresso/20 rounded-lg text-espresso"
-            >
-              Batal
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- MODAL DETAIL PRODUK (pengganti alert()) -->
-    <div
-      id="modal-detail"
-      class="fixed inset-0 bg-espresso/50 hidden items-center justify-center p-4 z-50"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="detail-title"
-    >
-      <div class="bg-cream rounded-lg w-full max-w-md overflow-hidden border-2 border-espresso/10">
-        <img id="detail-img" src="" alt="" class="w-full h-56 object-cover" />
-        <div class="p-6">
-          <div class="flex justify-between items-start">
-            <h3 id="detail-title" class="font-display font-semibold text-lg text-espresso"></h3>
-            <button id="close-detail" aria-label="Tutup detail produk" class="text-espresso/60 hover:text-espresso">✕</button>
-          </div>
-          <p id="detail-desc" class="text-sm text-espresso/70 mt-2"></p>
-          <div class="flex justify-between items-center mt-4">
-            <div id="detail-price" class="font-mono font-semibold text-espresso"></div>
-            <button
-              id="detail-add"
-              class="px-4 py-2 bg-caramel text-white rounded-lg hover:bg-espresso transition"
-            >
-              Tambah ke Keranjang
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Central WhatsApp number so it only needs updating in one place -->
-    <script>
-      const WA_NUMBER = "6285123615246";
-    </script>
-
-    <!-- SCRIPTS -->
-    <script>
-      // ===============================
-      // DATA PRODUK
-      // ===============================
-      const PRODUCTS = [
-        {
-          id: 1,
-          name: "Dubai Chewy Cookie",
-          price: 20000,
-          img: "images/produk/dubai.jpg",
-          tags: ["new"],
-          category: "Dubai",
-          desc: "Chewy cookie premium dengan tekstur lembut dan rasa khas ala Dubai.",
-        },
-        {
-          id: 2,
-          name: "Scoopable Cookie Choco Pistachio",
-          price: 12000,
-          img: "images/produk/pistachio.jpeg",
-          tags: ["new"],
-          category: "Cookies",
-          desc: "Scoopable Cookie Choco Pistachio Tanpa Kunafa.",
-        },
-        {
-          id: 3,
-          name: "Scoopable Classic Original",
-          price: 12000,
-          img: "images/produk/classic og.jpeg",
-          tags: ["new"],
-          category: "Cookies",
-          desc: "Scoopable Cookie Classic Original Feeling Dark Choco.",
-        },
-        {
-          id: 4,
-          name: "Scoopable Cookie Velvet",
-          price: 12000,
-          img: "images/produk/keju.jpeg",
-          tags: ["new"],
-          category: "Cookies",
-          desc: "Scoopable Cookie Velvet Feeling Cheese.",
-        },
-        {
-          id: 5,
-          name: "Bundling Package",
-          price: 30000,
-          img: "images/produk/bundling.jpeg",
-          tags: ["new"],
-          category: "Bundling",
-          desc: "1 Dubai Chewy Cookie dan 1 Scoopable Cookie Varian Classic Original.",
-        },
-        {
-          id: 6,
-          name: "Oreo Cookie",
-          price: 8000,
-          img: "images/produk/oreo.jpg",
-          tags: ["best"],
-          category: "Cookies",
-          desc: "Renyah dengan lelehan cokelat premium.",
-        },
-        {
-          id: 7,
-          name: "Matcha Cheese Cookies",
-          price: 9000,
-          img: "images/produk/matcha.jpg",
-          tags: ["new"],
-          category: "Cookies",
-          desc: "Lembut dengan cream cheese.",
-        },
-        {
-          id: 8,
-          name: "Matcha Choco Cookies",
-          price: 8000,
-          img: "images/produk/choco.jpg",
-          tags: [],
-          category: "Cookies",
-          desc: "Aroma matcha lembut dengan chocolate.",
-        },
-        {
-          id: 9,
-          name: "Matcha Choco Cheese Cookies",
-          price: 10000,
-          img: "images/produk/cookiekejucoklat.jpeg",
-          tags: [],
-          category: "Cookies",
-          desc: "Aroma matcha lembut dengan chocolate cheese.",
-        },
-        {
-          id: 10,
-          name: "Double Choco",
-          price: 7000,
-          img: "images/produk/doble.jpg",
-          tags: ["best"],
-          category: "Cookies",
-          desc: "Cokelat intens untuk pecinta cokelat.",
-        },
-        {
-          id: 11,
-          name: "Monster Cookies",
-          price: 6000,
-          img: "images/produk/monster.jpg",
-          tags: [],
-          category: "Cookies",
-          desc: "Cokelat intens untuk pecinta cokelat.",
-        },
-        {
-          id: 12,
-          name: "Red Cookies Cheese",
-          price: 7000,
-          img: "images/produk/redcheese.jpg",
-          tags: ["best"],
-          category: "Cookies",
-          desc: "Cokelat intens untuk pecinta cokelat.",
-        },
-        {
-          id: 13,
-          name: "Red Cookies Choco Cheese",
-          price: 8000,
-          img: "images/produk/chococheesred.jpg",
-          tags: ["best"],
-          category: "Cookies",
-          desc: "Cokelat intens untuk pecinta cokelat.",
-        },
-        {
-          id: 14,
-          name: "Red Cookies",
-          price: 6000,
-          img: "images/produk/redcookies.jpg",
-          tags: [],
-          category: "Cookies",
-          desc: "Cokelat intens untuk pecinta cokelat.",
-        },
-        {
-          id: 15,
-          name: "Original Cookies",
-          price: 6000,
-          img: "images/produk/og.jpg",
-          tags: [],
-          category: "Cookies",
-          desc: "Cita rasa klasik yang disukai semua orang.",
-        },
-        {
-          id: 16,
-          name: "Brownies",
-          price: 50000,
-          img: "images/produk/brownies.jpg",
-          tags: ["best"],
-          category: "Brownies",
-          desc: "Brownies fudgy lembut premium.",
-        },
-        {
-          id: 17,
-          name: "Brownies Bites Size L",
-          price: 20000,
-          img: "images/produk/bites.jpg",
-          tags: ["best"],
-          category: "Brownies",
-          desc: "Porsi lebih besar, lebih puas.",
-        },
-        {
-          id: 18,
-          name: "The Premium OG Soft Cookie",
-          price: 25000,
-          img: "images/produk/the premium og soft cookie.jpeg",
-          tags: ["new"],
-          category: "The Premium",
-          desc: "Soft cookie premium dengan tekstur lembut dan rasa original yang kaya.",
-        },
-        {
-          id: 19,
-          name: "Berry Cups",
-          price: 35000,
-          img: "images/produk/berry cups.jpeg",
-          tags: ["new"],
-          category: "Berry",
-          desc: "Kue cup dengan sentuhan berry yang segar.",
-        },
-        {
-          id: 20,
-          name: "Berry Kunafa Pistachio",
-          price: 40000,
-          img: "images/produk/berry kunafa pistachio.jpeg",
-          tags: ["new"],
-          category: "Berry",
-          desc: "Perpaduan berry, kunafa renyah, dan pistachio premium.",
-        },
-        {
-          id: 21,
-          name: "The Premium S'mores Soft Cookie",
-          price: 35000,
-          img: "images/produk/The Premium S'mores soft cookie.jpeg",
-          tags: ["new"],
-          category: "The Premium",
-          desc: "Soft cookie premium dengan rasa s'mores yang manis dan smoky.",
-        },
-        {
-          id: 22,
-          name: "Dubai Chewy Bites",
-          price: 30000,
-          img: "images/produk/Dubai Cehewy Bites.jpeg",
-          tags: ["new"],
-          category: "Dubai",
-          desc: "Versi bites dari Dubai Chewy Cookie, pas untuk camilan santai.",
-        },
-        {
-          id: 23,
-          name: "Little Classic Soft Cookie",
-          price: 20000,
-          img: "images/produk/little classic soft cookie.jpeg",
-          tags: ["new"],
-          category: "Dubai",
-          desc: "Soft cookie klasik dalam ukuran mini.",
-        },
-        {
-          id: 24,
-          name: "Little Z Soft Cookie",
-          price: 25000,
-          img: "images/produk/little z soft cookie.jpeg",
-          tags: ["new"],
-          category: "Dubai",
-          desc: "Soft cookie mini dengan cita rasa signature Bean'S Bake.",
-        },
-        {
-          id: 25,
-          name: "Little Rich Soft Cookie",
-          price: 30000,
-          img: "images/produk/little rich soft cookie.jpeg",
-          tags: ["new"],
-          category: "Dubai",
-          desc: "Soft cookie mini dengan rasa yang lebih kaya dan intens.",
-        },
-      ];
-
-      // ===============================
-      // UTIL: escape untuk cegah XSS dari data teks
-      // ===============================
-      function escapeHTML(str) {
-        const div = document.createElement("div");
-        div.textContent = str;
-        return div.innerHTML;
-      }
-
-      // ===============================
-      // STATE & HELPERS
-      // ===============================
-      let cart = [];
-
-      function loadCart() {
-        try {
-          const saved = localStorage.getItem("beansbake_cart");
-          cart = saved ? JSON.parse(saved) : [];
-        } catch (e) {
-          cart = [];
-        }
-      }
-
-      function saveCart() {
-        try {
-          localStorage.setItem("beansbake_cart", JSON.stringify(cart));
-        } catch (e) {
-          /* localStorage tidak tersedia, cart tetap jalan di memori */
-        }
-      }
-
-      const rupiah = (n) =>
-        "Rp" + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-      function imgFallbackAttr() {
-        return `onerror="this.onerror=null;this.src='https://via.placeholder.com/300x220?text=Bean%27S+Bake';this.classList.add('img-fallback')"`;
-      }
-
-      // ===============================
-      // KATEGORI: dibuat otomatis dari data produk supaya
-      // dropdown filter selalu sinkron dan tidak ada kategori "hantu"
-      // ===============================
-      function populateCategoryOptions() {
-        const select = document.getElementById("category");
-        const categories = [...new Set(PRODUCTS.map((p) => p.category))].sort();
-        categories.forEach((cat) => {
-          const opt = document.createElement("option");
-          opt.value = cat;
-          opt.textContent = cat;
-          select.appendChild(opt);
-        });
-      }
-
-      // ===============================
-      // RENDER PRODUK (grid + search + filter tag + filter kategori)
-      // ===============================
-      function renderProducts() {
-        const container = document.getElementById("list-products");
-        const noResult = document.getElementById("no-result");
-        container.innerHTML = "";
-
-        const tagFilter = document.getElementById("filter").value;
-        const catFilter = document.getElementById("category").value;
-        const q = document.getElementById("search").value.trim().toLowerCase();
-
-        const list = PRODUCTS.filter((p) => {
-          const matchTag = tagFilter === "all" ? true : p.tags.includes(tagFilter);
-          const matchCategory = catFilter === "all" ? true : p.category === catFilter;
-          const matchSearch = q === "" ? true : p.name.toLowerCase().includes(q);
-          return matchTag && matchCategory && matchSearch;
-        });
-
-        noResult.classList.toggle("hidden", list.length > 0);
-
-        list.forEach((p) => {
-          const card = document.createElement("div");
-          card.className = "product-card bg-white rounded-lg shadow p-4 border border-espresso/10";
-
-          const badges = p.tags
-            .map((t) => {
-              const label = t === "best" ? "Best Seller" : t === "new" ? "Baru" : t;
-              const color = t === "best" ? "bg-gold" : "bg-pistachio text-white";
-              return `<span class="sticker inline-block ${color} text-espresso px-2 py-0.5 rounded-sm mr-1">${escapeHTML(label)}</span>`;
-            })
-            .join("");
-
-          card.innerHTML = `
-        <div class="card-img-wrap">
-          <img src="${escapeHTML(p.img)}" alt="${escapeHTML(p.name)}" class="w-full rounded card-img" loading="lazy" ${imgFallbackAttr()}>
-        </div>
-        <div class="mt-2 min-h-[1.5rem]">${badges}</div>
-        <h4 class="mt-1 font-display font-semibold text-espresso">${escapeHTML(p.name)}</h4>
-        <p class="text-sm text-espresso/60">${escapeHTML(p.desc)}</p>
-
-        <div class="mt-3 flex justify-between items-center">
-          <div class="font-mono font-semibold text-espresso">${rupiah(p.price)}</div>
-          <div class="flex gap-2">
-            <button data-id="${p.id}" class="btn-add px-3 py-1 border-2 border-espresso/15 rounded-lg text-sm hover:bg-paper">Tambah</button>
-            <button data-id="${p.id}" class="btn-detail px-3 py-1 bg-caramel text-white rounded-lg text-sm hover:bg-espresso">Detail</button>
-          </div>
-        </div>
-      `;
-          container.appendChild(card);
-        });
-
-        document
-          .querySelectorAll(".btn-add")
-          .forEach((btn) =>
-            btn.addEventListener("click", (e) =>
-              addToCart(Number(e.target.dataset.id))
-            )
-          );
-
-        document
-          .querySelectorAll(".btn-detail")
-          .forEach((btn) =>
-            btn.addEventListener("click", (e) =>
-              showDetail(Number(e.target.dataset.id))
-            )
-          );
-      }
-
-      // ===============================
-      // MODAL DETAIL (pengganti alert())
-      // ===============================
-      const detailModal = document.getElementById("modal-detail");
-      let currentDetailId = null;
-
-      function showDetail(id) {
-        const p = PRODUCTS.find((x) => x.id === id);
-        if (!p) return;
-        currentDetailId = id;
-        document.getElementById("detail-img").src = p.img;
-        document.getElementById("detail-img").alt = p.name;
-        document.getElementById("detail-img").setAttribute(
-          "onerror",
-          "this.onerror=null;this.src='https://via.placeholder.com/400x220?text=Bean%27S+Bake';this.classList.add('img-fallback')"
-        );
-        document.getElementById("detail-title").textContent = p.name;
-        document.getElementById("detail-desc").textContent = p.desc;
-        document.getElementById("detail-price").textContent = rupiah(p.price);
-        openModal(detailModal);
-      }
-
-      document.getElementById("detail-add").addEventListener("click", () => {
-        if (currentDetailId !== null) addToCart(currentDetailId);
-        closeModal(detailModal);
-      });
-      document.getElementById("close-detail").addEventListener("click", () => closeModal(detailModal));
-
-      // ===============================
-      // CART FUNCTIONS
-      // ===============================
-      function addToCart(id) {
-        const found = cart.find((c) => c.id === id);
-        if (found) found.qty++;
-        else cart.push({ id, qty: 1 });
-
-        saveCart();
-        updateCartUI();
-      }
-
-      function changeQty(id, amount) {
-        const item = cart.find((c) => c.id === id);
-        if (!item) return;
-
-        item.qty += amount;
-        if (item.qty <= 0) {
-          cart = cart.filter((c) => c.id !== id);
-        }
-        saveCart();
-        updateCartUI();
-      }
-
-      function removeItem(id) {
-        cart = cart.filter((c) => c.id !== id);
-        saveCart();
-        updateCartUI();
-      }
-
-      function updateCartUI() {
-        const count = cart.reduce((s, i) => s + i.qty, 0);
-        document.getElementById("cart-count").textContent = count;
-
-        const drawer = document.getElementById("cart-drawer");
-        const wrap = document.getElementById("cart-items");
-        wrap.innerHTML = "";
-
-        let total = 0;
-
-        cart.forEach((ci) => {
-          const p = PRODUCTS.find((x) => x.id === ci.id);
-          if (!p) return;
-          total += p.price * ci.qty;
-
-          const row = document.createElement("div");
-          row.className = "flex justify-between items-center";
-
-          row.innerHTML = `
-        <div class="flex items-center gap-3">
-          <img src="${escapeHTML(p.img)}" alt="${escapeHTML(p.name)}" class="w-12 h-12 rounded object-cover" ${imgFallbackAttr()}>
-          <div>
-            <div class="text-sm font-medium text-espresso">${escapeHTML(p.name)}</div>
-            <div class="text-xs text-espresso/50 font-mono">${rupiah(p.price)} x ${ci.qty}</div>
-          </div>
-        </div>
-
-        <div class="flex gap-2">
-          <button class="btn-decrease px-2 border border-espresso/15 rounded" data-id="${ci.id}" aria-label="Kurangi jumlah ${escapeHTML(p.name)}">-</button>
-          <button class="btn-increase px-2 border border-espresso/15 rounded" data-id="${ci.id}" aria-label="Tambah jumlah ${escapeHTML(p.name)}">+</button>
-          <button class="btn-remove px-2 border border-espresso/15 rounded" data-id="${ci.id}" aria-label="Hapus ${escapeHTML(p.name)} dari keranjang">Hapus</button>
-        </div>
-      `;
-          wrap.appendChild(row);
-        });
-
-        document.getElementById("cart-total").textContent = rupiah(total);
-        drawer.style.transform = cart.length > 0 ? "translateY(0)" : "translateY(150%)";
-
-        document
-          .querySelectorAll(".btn-decrease")
-          .forEach((btn) =>
-            btn.addEventListener("click", (e) =>
-              changeQty(Number(e.target.dataset.id), -1)
-            )
-          );
-        document
-          .querySelectorAll(".btn-increase")
-          .forEach((btn) =>
-            btn.addEventListener("click", (e) =>
-              changeQty(Number(e.target.dataset.id), +1)
-            )
-          );
-        document
-          .querySelectorAll(".btn-remove")
-          .forEach((btn) =>
-            btn.addEventListener("click", (e) =>
-              removeItem(Number(e.target.dataset.id))
-            )
-          );
-      }
-
-      // ===============================
-      // MODAL HELPERS (focus trap + Esc to close)
-      // ===============================
-      let lastFocusedEl = null;
-
-      function openModal(modal) {
-        lastFocusedEl = document.activeElement;
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-        const focusable = modal.querySelector("input, textarea, select, button");
-        if (focusable) focusable.focus();
-        document.addEventListener("keydown", trapFocus);
-      }
-
-      function closeModal(modal) {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-        document.removeEventListener("keydown", trapFocus);
-        if (lastFocusedEl) lastFocusedEl.focus();
-      }
-
-      function trapFocus(e) {
-        const openModalEl = document.querySelector('[role="dialog"]:not(.hidden)');
-        if (!openModalEl) return;
-
-        if (e.key === "Escape") {
-          closeModal(openModalEl);
-          return;
-        }
-
-        if (e.key !== "Tab") return;
-        const focusables = openModalEl.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusables.length === 0) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-
-      // ===============================
-      // CHECKOUT
-      // ===============================
-      const checkoutModal = document.getElementById("modal-checkout");
-
-      document.getElementById("checkout-btn").addEventListener("click", () => {
-        if (cart.length === 0) return alert("Keranjang masih kosong!");
-        openModal(checkoutModal);
-      });
-
-      document.getElementById("close-checkout").onclick =
-        document.getElementById("cancel-checkout").onclick = () => closeModal(checkoutModal);
-
-      document
-        .getElementById("checkout-form")
-        .addEventListener("submit", (e) => {
-          e.preventDefault();
-
-          const phoneInput = document.getElementById("cf-phone");
-          const phoneError = document.getElementById("phone-error");
-
-          if (!e.target.checkValidity()) {
-            phoneError.classList.toggle("hidden", phoneInput.validity.valid);
-            e.target.reportValidity();
-            return;
-          }
-          phoneError.classList.add("hidden");
-
-          const f = new FormData(e.target);
-          const name = f.get("name");
-          const addr = f.get("address");
-          const city = f.get("city");
-          const phone = f.get("phone");
-
-          let text = `Halo Bean'S Bake! Saya ingin memesan:\n\n`;
-
-          cart.forEach((c) => {
-            const p = PRODUCTS.find((x) => x.id === c.id);
-            if (!p) return;
-            text += `• ${p.name} (${c.qty} pcs) — ${rupiah(p.price * c.qty)}\n`;
-          });
-
-          text += `\nTotal: ${document.getElementById("cart-total").textContent}`;
-          text += `\n\nNama: ${name}\nAlamat: ${addr}, ${city}\nNo WA: ${phone}`;
-
-          const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
-          window.open(url, "_blank", "noopener,noreferrer");
-
-          closeModal(checkoutModal);
-          cart = [];
-          saveCart();
-          updateCartUI();
-          e.target.reset();
-        });
-
-      // ===============================
-      // NAVBAR MOBILE
-      // ===============================
-      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-      const mobileMenu = document.getElementById("mobile-menu");
-
-      mobileMenuBtn.addEventListener("click", () => {
-        const isOpen = !mobileMenu.classList.contains("hidden");
-        mobileMenu.classList.toggle("hidden");
-        mobileMenuBtn.setAttribute("aria-expanded", String(!isOpen));
-      });
-
-      // tutup menu mobile otomatis saat link diklik
-      mobileMenu.querySelectorAll("a").forEach((link) =>
-        link.addEventListener("click", () => {
-          mobileMenu.classList.add("hidden");
-          mobileMenuBtn.setAttribute("aria-expanded", "false");
-        })
-      );
-
-      document.getElementById("close-cart").addEventListener("click", () => {
-        document.getElementById("cart-drawer").style.transform = "translateY(150%)";
-      });
-
-      document.getElementById("btn-cart").addEventListener("click", () => {
-        document.getElementById("cart-drawer").style.transform = "translateY(0)";
-      });
-
-      // ===============================
-      // INIT
-      // ===============================
-      loadCart();
-      populateCategoryOptions();
-      renderProducts();
-      updateCartUI();
-
-      document.getElementById("filter").addEventListener("change", renderProducts);
-      document.getElementById("category").addEventListener("change", renderProducts);
-      document.getElementById("search").addEventListener("input", renderProducts);
-    </script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bean'S Bake</title>
+<meta name="description" content="Bean'S Bake - Dubai chewy cookie, scoopable cookie, brownies fudgy, dan soft cookie premium, fresh setiap hari tanpa pengawet. Pesan langsung via WhatsApp.">
+<meta property="og:title" content="Bean'S Bake">
+<meta property="og:description" content="Dubai chewy cookie, scoopable cookie, brownies, dan soft cookie premium, fresh setiap hari.">
+<meta property="og:image" content="images/logo.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/jpeg" href="images/logo.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Bakery","name":"Bean'S Bake","image":"images/logo.jpg","address":{"@type":"PostalAddress","streetAddress":"Perumahan Puri Delta Angsana blok BE 07"},"telephone":"+6285123615246","openingHours":"Mo-Su 08:00-18:00","sameAs":["https://instagram.com/bakery.auz","https://tiktok.com/@bakery.auzz"]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2a1a14;--soft:#6b5a50;--bg:#fffdf8;--pist:#cfdca3;--pist-d:#5d7a2b;--berry:#d63c6a;--berry-d:#b32a54;--sun:#f6c445;--line:#e7e1d4;--r:18px}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 "DM Sans",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.brand{font-family:"Bricolage Grotesque",sans-serif;line-height:1.1}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--berry);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;transition:background .15s,transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.berry{background:var(--berry);border-color:var(--berry)}.btn.berry:hover{background:var(--berry-d);border-color:var(--berry-d)}
+.btn.ghost{background:transparent;color:var(--ink)}.btn.ghost:hover{background:#fff}
+.btn.sm{padding:7px 14px;font-size:14px}
+
+/* header */
+header{position:sticky;top:0;z-index:30;background:rgba(255,253,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;text-decoration:none}
+.brand img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.links{display:flex;align-items:center;gap:26px;font-weight:500}
+.links a{text-decoration:none}.links a:hover{color:var(--berry)}
+.cart-btn{position:relative;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:9px 18px;font-weight:700;cursor:pointer}
+.cart-btn b{background:var(--sun);color:var(--ink);border-radius:999px;padding:1px 8px;margin-left:6px;font-size:13px}
+#menu-btn{display:none;background:none;border:0;font-size:26px;cursor:pointer}
+
+/* hero */
+.hero{background:var(--pist);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-top:64px;padding-bottom:72px}
+.hero h1{font-size:clamp(40px,6vw,68px);font-weight:800;letter-spacing:-.02em}
+.hero p{margin:20px 0 28px;max-width:46ch;font-size:18px;color:#3b3a28}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.stack{position:relative;height:380px}
+.stack img{position:absolute;width:56%;aspect-ratio:1;object-fit:cover;border:6px solid #fff;border-radius:var(--r);box-shadow:0 14px 30px -12px rgba(42,26,20,.45);background:#eee}
+.stack img:nth-child(1){left:0;top:30px;transform:rotate(-7deg)}
+.stack img:nth-child(2){right:0;top:0;transform:rotate(6deg)}
+.stack img:nth-child(3){left:22%;bottom:0;transform:rotate(-2deg);width:52%}
+.stack .tag{position:absolute;right:4%;bottom:26px;z-index:2;background:var(--sun);border-radius:50%;width:104px;height:104px;display:grid;place-items:center;text-align:center;font:800 15px/1.15 "Bricolage Grotesque";transform:rotate(10deg)}
+
+/* promise strip */
+.strip{background:var(--ink);color:#fff}
+.strip .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:18px;padding-bottom:18px;font-weight:500;text-align:center}
+
+/* menu */
+section{padding:72px 0}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.head h2{font-size:clamp(30px,4vw,44px);font-weight:800}
+.tools{display:flex;gap:10px;flex-wrap:wrap}
+.tools input,.tools select{border:2px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;min-width:0}
+.tools input:focus,.tools select:focus{border-color:var(--berry);outline:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px;margin-top:32px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 28px -16px rgba(42,26,20,.4)}
+.ph{position:relative;aspect-ratio:4/3;background:var(--pist);cursor:pointer}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph img.fb{object-fit:contain;padding:28px}
+.badge{position:absolute;left:12px;top:12px;background:var(--sun);font-weight:700;font-size:12px;padding:3px 10px;border-radius:999px}
+.badge.new{background:var(--pist-d);color:#fff}
+.body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.body small{color:var(--pist-d);font-weight:700}
+.body h4{font-size:19px;font-weight:700}
+.body p{color:var(--soft);font-size:14px;flex:1}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.price{font:800 20px "Bricolage Grotesque"}
+.empty{margin-top:40px;text-align:center;color:var(--soft)}
+
+/* about */
+.about{background:var(--pist)}
+.about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.about h2{font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:16px}
+.about p{margin-bottom:14px;max-width:60ch}
+.about img{border-radius:var(--r);border:6px solid #fff;box-shadow:0 14px 30px -14px rgba(42,26,20,.4);transform:rotate(2deg)}
+
+/* payment */
+.pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:28px;max-width:760px}
+.pay div{border:2px solid var(--ink);border-radius:var(--r);padding:20px}
+.pay h4{font-size:20px;margin-bottom:6px}.pay p{color:var(--soft);font-size:15px}
+
+/* footer */
+footer{background:var(--ink);color:#f3ece4;padding:56px 0 0}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1.2fr 1fr 1fr;gap:28px}
+footer h4{font-size:18px;margin-bottom:8px}
+footer p,footer a{font-size:15px;color:#d8cdc2}
+footer a:hover{color:var(--sun)}
+.soc{display:flex;gap:14px}.soc svg{width:26px;height:26px;fill:currentColor}
+.copy{margin-top:40px;padding:16px;text-align:center;font-size:14px;background:rgba(0,0,0,.25);color:#b9ada2}
+
+/* cart */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:#fff;z-index:40;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .25s;box-shadow:-20px 0 40px -20px rgba(0,0,0,.35)}
+.drawer.open{transform:none}
+.drawer>div{padding:18px 20px}
+.drawer .top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.drawer .top h4{font-size:22px}
+#cart-items{flex:1;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.ci{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center}
+.ci img{width:56px;height:56px;border-radius:12px;object-fit:cover;background:var(--pist)}
+.ci .n{font-weight:700;font-size:15px;line-height:1.3}.ci .s{font-size:13px;color:var(--soft)}
+.qty{display:flex;gap:6px;margin-top:6px}
+.qty button{min-width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;padding:0 8px}
+.qty button:hover{background:var(--pist)}
+.drawer .bot{border-top:1px solid var(--line)}
+.total{display:flex;justify-content:space-between;font:800 20px "Bricolage Grotesque";margin-bottom:12px}
+.none{color:var(--soft);text-align:center;margin-top:30px}
+.fab{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:25;box-shadow:0 10px 24px -8px rgba(0,0,0,.5);transition:transform .25s}
+.fab.show{transform:translate(-50%,0)}
+.scrim{position:fixed;inset:0;background:rgba(42,26,20,.45);z-index:35;display:none}
+.scrim.on{display:block}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(42,26,20,.55);z-index:50;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.sheet{background:var(--bg);border-radius:22px;width:100%;max-width:480px;max-height:92vh;overflow:auto}
+.sheet .in{padding:22px}
+.sheet h3{font-size:24px;font-weight:800}
+.x{background:none;border:0;font-size:22px;cursor:pointer;padding:4px 8px}
+.sheet label{display:block;font-size:14px;font-weight:500;margin-top:12px}
+.sheet input,.sheet textarea{width:100%;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.sheet input:focus,.sheet textarea:focus{border-color:var(--berry);outline:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.err{color:var(--berry-d);font-size:13px;margin-top:4px}
+.acts{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+#d-img{width:100%;height:240px;object-fit:cover;background:var(--pist)}
+.hidden{display:none}
+
+@media(max-width:820px){
+ .hero .wrap,.about .wrap{grid-template-columns:1fr}
+ .hero .wrap{padding-top:40px;padding-bottom:48px}
+ .stack{height:300px}
+ footer .wrap{grid-template-columns:1fr 1fr}
+ .links a{display:none}
+ .strip .wrap{grid-template-columns:1fr;gap:4px}
+ section{padding:52px 0}
+}
+@media(max-width:480px){footer .wrap{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap nav">
+  <a href="#" class="brand"><img src="images/logo.jpg" alt="Logo Bean'S Bake">Bean'S Bake</a>
+  <nav class="links" aria-label="Navigasi utama">
+   <a href="#produk">Menu</a><a href="#tentang">Tentang</a><a href="#kontak">Kontak</a>
+   <button class="cart-btn" id="btn-cart" aria-label="Buka keranjang belanja">Keranjang<b id="cart-count">0</b></button>
+  </nav>
+ </div>
+</header>
+
+<main>
+<div class="hero">
+ <div class="wrap">
+  <div>
+   <h1>Cookies dan brownies yang baru keluar oven.</h1>
+   <p>Dubai chewy cookie, scoopable cookie choco pistachio, brownies fudgy, sampai soft cookie premium. Dibuat dari resep pilihan, tanpa pengawet, dan fresh setiap hari.</p>
+   <div class="cta">
+    <a href="#produk" class="btn berry">Lihat menu</a>
+    <a href="https://wa.me/6285123615246" target="_blank" rel="noopener noreferrer" class="btn ghost">Tanya via WhatsApp</a>
+   </div>
+  </div>
+  <div class="stack" aria-hidden="true">
+   <img src="images/produk/dubai.jpg" alt="" onerror="this.classList.add('fb')">
+   <img src="images/produk/pistachio.jpeg" alt="" onerror="this.classList.add('fb')">
+   <img src="images/produk/brownies.jpg" alt="" onerror="this.classList.add('fb')">
+   <div class="tag">Fresh<br>setiap<br>hari</div>
+  </div>
+ </div>
+</div>
+<div class="strip"><div class="wrap"><span>Tanpa pengawet</span><span>Bahan import dan lokal pilihan</span><span>Buka setiap hari 08.00 - 18.00</span></div></div>
+
+<section id="produk">
+ <div class="wrap">
+  <div class="head">
+   <h2>Pilih menu favoritmu</h2>
+   <div class="tools">
+    <input id="search" type="search" aria-label="Cari menu" placeholder="Cari menu...">
+    <select id="category" aria-label="Filter kategori"><option value="all">Semua kategori</option></select>
+    <select id="filter" aria-label="Filter tag"><option value="all">Semua tag</option><option value="best">Best Seller</option><option value="new">Baru</option></select>
+   </div>
+  </div>
+  <p id="no-result" class="empty hidden">Menu tidak ditemukan. Coba kata kunci atau filter lain.</p>
+  <div id="list-products" class="grid"></div>
+ </div>
+</section>
+
+<section id="tentang" class="about">
+ <div class="wrap">
+  <div>
+   <h2>Setiap gigitan, satu momen kecil yang manis</h2>
+   <p>Bean'S Bake adalah rumah bagi aneka kue dan cookies premium yang dibuat sepenuh hati. Kami memakai bahan pilihan, resep terbaik, dan proses yang higienis supaya rasanya konsisten, lembut, dan bikin nagih.</p>
+   <p>Setiap produk dibuat fresh setiap hari, tanpa pengawet, oleh tim yang berpengalaman. Cocok untuk camilan di rumah, hampers untuk orang tersayang, sampai acara kantor dan perayaan besar.</p>
+  </div>
+  <img src="images/bake.jpg" alt="Suasana dapur dan proses pembuatan kue Bean'S Bake" onerror="this.onerror=null;this.src='https://via.placeholder.com/600x400?text=Bean%27S+Bake'">
+ </div>
+</section>
+
+<section>
+ <div class="wrap">
+  <h2 style="font-size:clamp(28px,4vw,40px);font-weight:800">Cara bayar</h2>
+  <p style="color:var(--soft);margin-top:8px">Pesanan dikonfirmasi lewat chat WhatsApp, lalu bayar dengan salah satu cara ini.</p>
+  <div class="pay">
+   <div><h4>Transfer Bank dan E-Wallet</h4><p>Bayar lewat GoPay, OVO, DANA, ShopeePay, dan e-wallet lainnya. Nomor rekening dikirim setelah pesanan dikonfirmasi via WhatsApp.</p></div>
+   <div><h4>COD (Ambil Langsung)</h4><p>Bayar tunai saat ambil pesanan di lokasi Bean'S Bake.</p></div>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer id="kontak">
+ <div class="wrap">
+  <div><h4>Bean'S Bake</h4><p>Perumahan Puri Delta Angsana blok BE 07<br>Buka: 08.00 - 18.00</p></div>
+  <div><h4>Cara pesan</h4><p>Pilih produk, tambah ke keranjang, isi form checkout, lalu konfirmasi via WhatsApp.</p></div>
+  <div><h4>Kontak</h4><p>WA: <a href="https://wa.me/6285123615246" target="_blank" rel="noopener noreferrer">+62 851-2361-5246</a></p></div>
+  <div><h4>Ikuti kami</h4>
+   <div class="soc">
+    <a href="https://instagram.com/bakery.auz" target="_blank" rel="noopener noreferrer" aria-label="Instagram Bean'S Bake"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5H7zm10 2c1.700 0 3 1.300 3 3v10c0 1.700-1.300 3-3 3H7c-1.700 0-3-1.300-3-3V7c0-1.700 1.300-3 3-3h10zm-5 3c-2.800 0-5 2.200-5 5s2.200 5 5 5 5-2.200 5-5-2.200-5-5-5zm0 2c1.700 0 3 1.300 3 3s-1.300 3-3 3-3-1.300-3-3 1.300-3 3-3zm4.500-.8c-.4 0-.8.300-.8.800s.300.800.800.800.800-.300.800-.800-.400-.800-.800-.800z"/></svg></a>
+    <a href="https://tiktok.com/@bakery.auzz" target="_blank" rel="noopener noreferrer" aria-label="TikTok Bean'S Bake"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.750 2h3.190c.220 1.600 1.390 2.940 2.950 3.360v3.200c-1.170-.030-2.290-.370-3.250-.980v6.420c0 3.200-2.600 5.800-5.800 5.800S4 17.200 4 14s2.600-5.800 5.800-5.800c.330 0 .650.030.960.100v3.300c-.300-.120-.630-.180-.960-.180-1.340 0-2.430 1.100-2.430 2.460s1.100 2.460 2.430 2.460 2.430-1.100 2.430-2.460V2z"/></svg></a>
+   </div>
+  </div>
+ </div>
+ <div class="copy">© 2026 Bean'S Bake</div>
+</footer>
+
+<button class="btn berry fab" id="fab">Lihat keranjang</button>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="cart-drawer" role="dialog" aria-label="Keranjang belanja">
+ <div class="top"><h4>Keranjang</h4><button class="x" id="close-cart" aria-label="Tutup keranjang">✕</button></div>
+ <div id="cart-items"></div>
+ <div class="bot"><div class="total"><span>Total</span><span id="cart-total">Rp0</span></div><button class="btn berry" id="checkout-btn" style="width:100%">Checkout</button></div>
+</aside>
+
+<div class="modal" id="modal-checkout" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+ <div class="sheet"><div class="in">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3 id="checkout-title">Form checkout</h3><button class="x" id="close-checkout" aria-label="Tutup form checkout">✕</button></div>
+  <form id="checkout-form" novalidate>
+   <label for="cf-name">Nama</label><input id="cf-name" name="name" required>
+   <label for="cf-address">Alamat</label><textarea id="cf-address" name="address" rows="2" required></textarea>
+   <div class="two">
+    <div><label for="cf-city">Kota</label><input id="cf-city" name="city" required></div>
+    <div><label for="cf-phone">No. HP (WA)</label><input id="cf-phone" name="phone" type="tel" required pattern="^(\+62|62|0)8[0-9]{8,12}$" title="Contoh: 081234567890" placeholder="08xxxxxxxxxx"><p id="phone-error" class="err hidden">Format nomor HP tidak valid.</p></div>
+   </div>
+   <div class="acts"><button type="submit" class="btn berry">Konfirmasi dan kirim WA</button><button type="button" id="cancel-checkout" class="btn ghost">Batal</button></div>
+  </form>
+ </div></div>
+</div>
+
+<div class="modal" id="modal-detail" role="dialog" aria-modal="true" aria-labelledby="d-title">
+ <div class="sheet">
+  <img id="d-img" src="" alt="">
+  <div class="in">
+   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><h3 id="d-title"></h3><button class="x" id="close-detail" aria-label="Tutup detail produk">✕</button></div>
+   <p id="d-desc" style="color:var(--soft);margin-top:8px"></p>
+   <div class="row" style="margin-top:18px"><span class="price" id="d-price"></span><button class="btn berry" id="d-add">Tambah ke keranjang</button></div>
+  </div>
+ </div>
+</div>
+
+<script>
+const WA_NUMBER="6285123615246";
+const D="images/produk/";
+// [nama, harga, gambar, tag, kategori, deskripsi]
+const PRODUCTS=[
+["Dubai Chewy Cookie",20000,"dubai.jpg","new","Dubai","Chewy cookie premium dengan tekstur lembut dan rasa khas ala Dubai."],
+["Scoopable Cookie Choco Pistachio",12000,"pistachio.jpeg","new","Cookies","Scoopable Cookie Choco Pistachio Tanpa Kunafa."],
+["Scoopable Classic Original",12000,"classic og.jpeg","new","Cookies","Scoopable Cookie Classic Original Feeling Dark Choco."],
+["Scoopable Cookie Velvet",12000,"keju.jpeg","new","Cookies","Scoopable Cookie Velvet Feeling Cheese."],
+["Bundling Package",30000,"bundling.jpeg","new","Bundling","1 Dubai Chewy Cookie dan 1 Scoopable Cookie Varian Classic Original."],
+["Oreo Cookie",8000,"oreo.jpg","best","Cookies","Renyah dengan lelehan cokelat premium."],
+["Matcha Cheese Cookies",9000,"matcha.jpg","new","Cookies","Lembut dengan cream cheese."],
+["Matcha Choco Cookies",8000,"choco.jpg","","Cookies","Aroma matcha lembut dengan chocolate."],
+["Matcha Choco Cheese Cookies",10000,"cookiekejucoklat.jpeg","","Cookies","Aroma matcha lembut dengan chocolate cheese."],
+["Double Choco",7000,"doble.jpg","best","Cookies","Cokelat intens untuk pecinta cokelat."],
+["Monster Cookies",6000,"monster.jpg","","Cookies","Cokelat intens untuk pecinta cokelat."],
+["Red Cookies Cheese",7000,"redcheese.jpg","best","Cookies","Cokelat intens untuk pecinta cokelat."],
+["Red Cookies Choco Cheese",8000,"chococheesred.jpg","best","Cookies","Cokelat intens untuk pecinta cokelat."],
+["Red Cookies",6000,"redcookies.jpg","","Cookies","Cokelat intens untuk pecinta cokelat."],
+["Original Cookies",6000,"og.jpg","","Cookies","Cita rasa klasik yang disukai semua orang."],
+["Brownies",50000,"brownies.jpg","best","Brownies","Brownies fudgy lembut premium."],
+["Brownies Bites Size L",20000,"bites.jpg","best","Brownies","Porsi lebih besar, lebih puas."],
+["The Premium OG Soft Cookie",25000,"the premium og soft cookie.jpeg","new","The Premium","Soft cookie premium dengan tekstur lembut dan rasa original yang kaya."],
+["Berry Cups",35000,"berry cups.jpeg","new","Berry","Kue cup dengan sentuhan berry yang segar."],
+["Berry Kunafa Pistachio",40000,"berry kunafa pistachio.jpeg","new","Berry","Perpaduan berry, kunafa renyah, dan pistachio premium."],
+["The Premium S'mores Soft Cookie",35000,"The Premium S'mores soft cookie.jpeg","new","The Premium","Soft cookie premium dengan rasa s'mores yang manis dan smoky."],
+["Dubai Chewy Bites",30000,"Dubai Cehewy Bites.jpeg","new","Dubai","Versi bites dari Dubai Chewy Cookie, pas untuk camilan santai."],
+["Little Classic Soft Cookie",20000,"little classic soft cookie.jpeg","new","Dubai","Soft cookie klasik dalam ukuran mini."],
+["Little Z Soft Cookie",25000,"little z soft cookie.jpeg","new","Dubai","Soft cookie mini dengan cita rasa signature Bean'S Bake."],
+["Little Rich Soft Cookie",30000,"little rich soft cookie.jpeg","new","Dubai","Soft cookie mini dengan rasa yang lebih kaya dan intens."]
+].map((a,i)=>({id:i+1,name:a[0],price:a[1],img:D+a[2],tags:a[3]?[a[3]]:[],category:a[4],desc:a[5]}));
+
+const $=id=>document.getElementById(id);
+const esc=s=>{const d=document.createElement("div");d.textContent=s;return d.innerHTML};
+const rupiah=n=>"Rp"+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
+const src=p=>esc(encodeURI(p.img));
+const FB=`onerror="this.onerror=null;this.src='https://via.placeholder.com/300x220?text=Bean%27S+Bake';this.classList.add('fb')"`;
+let cart=[];
+const loadCart=()=>{try{cart=JSON.parse(localStorage.getItem("beansbake_cart"))||[]}catch(e){cart=[]}};
+const saveCart=()=>{try{localStorage.setItem("beansbake_cart",JSON.stringify(cart))}catch(e){}};
+
+/* ---------- menu ---------- */
+[...new Set(PRODUCTS.map(p=>p.category))].sort().forEach(c=>{const o=document.createElement("option");o.value=o.textContent=c;$("category").appendChild(o)});
+
+function renderProducts(){
+ const tag=$("filter").value,cat=$("category").value,q=$("search").value.trim().toLowerCase();
+ const list=PRODUCTS.filter(p=>(tag==="all"||p.tags.includes(tag))&&(cat==="all"||p.category===cat)&&(!q||p.name.toLowerCase().includes(q)));
+ $("no-result").classList.toggle("hidden",list.length>0);
+ $("list-products").innerHTML=list.map(p=>{
+  const b=p.tags.map(t=>`<span class="badge ${t}">${t==="best"?"Best Seller":"Baru"}</span>`).join("");
+  return `<article class="card">
+   <div class="ph" data-detail="${p.id}"><img src="${src(p)}" alt="${esc(p.name)}" loading="lazy" ${FB}>${b}</div>
+   <div class="body"><small>${esc(p.category)}</small><h4>${esc(p.name)}</h4><p>${esc(p.desc)}</p>
+    <div class="row"><span class="price">${rupiah(p.price)}</span>
+     <span><button class="btn ghost sm" data-detail="${p.id}">Detail</button> <button class="btn berry sm" data-add="${p.id}">Tambah</button></span></div></div>
+  </article>`}).join("");
+}
+$("list-products").addEventListener("click",e=>{
+ const a=e.target.closest("[data-add]"),d=e.target.closest("[data-detail]");
+ if(a)addToCart(+a.dataset.add);else if(d)showDetail(+d.dataset.detail);
+});
+["filter","category"].forEach(i=>$(i).addEventListener("change",renderProducts));
+$("search").addEventListener("input",renderProducts);
+
+/* ---------- modal ---------- */
+let lastFocus=null;
+function openModal(m){lastFocus=document.activeElement;m.classList.add("on");(m.querySelector("input,textarea,button"))?.focus();document.addEventListener("keydown",keys)}
+function closeModal(m){m.classList.remove("on");document.removeEventListener("keydown",keys);lastFocus&&lastFocus.focus()}
+function keys(e){
+ const m=document.querySelector(".modal.on");if(!m)return;
+ if(e.key==="Escape"){closeModal(m);return}
+ if(e.key!=="Tab")return;
+ const f=m.querySelectorAll("button,[href],input,select,textarea"),a=f[0],z=f[f.length-1];
+ if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}
+ else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}
+}
+let detailId=null;
+function showDetail(id){
+ const p=PRODUCTS.find(x=>x.id===id);if(!p)return;detailId=id;
+ const i=$("d-img");i.classList.remove("fb");i.onerror=()=>{i.onerror=null;i.src="https://via.placeholder.com/400x240?text=Bean%27S+Bake"};
+ i.src=encodeURI(p.img);i.alt=p.name;
+ $("d-title").textContent=p.name;$("d-desc").textContent=p.desc;$("d-price").textContent=rupiah(p.price);
+ openModal($("modal-detail"));
+}
+$("d-add").onclick=()=>{if(detailId!==null)addToCart(detailId);closeModal($("modal-detail"))};
+$("close-detail").onclick=()=>closeModal($("modal-detail"));
+
+/* ---------- cart ---------- */
+function addToCart(id){const f=cart.find(c=>c.id===id);f?f.qty++:cart.push({id,qty:1});saveCart();updateCartUI()}
+function changeQty(id,n){const it=cart.find(c=>c.id===id);if(!it)return;it.qty+=n;if(it.qty<=0)cart=cart.filter(c=>c.id!==id);saveCart();updateCartUI()}
+function removeItem(id){cart=cart.filter(c=>c.id!==id);saveCart();updateCartUI()}
+function toggleCart(open){$("cart-drawer").classList.toggle("open",open);$("scrim").classList.toggle("on",open)}
+
+function updateCartUI(){
+ const count=cart.reduce((s,i)=>s+i.qty,0);let total=0;
+ $("cart-count").textContent=count;
+ $("cart-items").innerHTML=cart.length?cart.map(ci=>{
+  const p=PRODUCTS.find(x=>x.id===ci.id);if(!p)return"";total+=p.price*ci.qty;
+  return `<div class="ci"><img src="${src(p)}" alt="${esc(p.name)}" ${FB}><div>
+   <div class="n">${esc(p.name)}</div><div class="s">${rupiah(p.price)} x ${ci.qty}</div>
+   <div class="qty"><button data-dec="${ci.id}" aria-label="Kurangi jumlah ${esc(p.name)}">-</button><button data-inc="${ci.id}" aria-label="Tambah jumlah ${esc(p.name)}">+</button><button data-del="${ci.id}" aria-label="Hapus ${esc(p.name)} dari keranjang">Hapus</button></div></div></div>`}).join("")
+  :`<p class="none">Keranjang masih kosong. Pilih menu dulu, ya.</p>`;
+ $("cart-total").textContent=rupiah(total);
+ $("fab").textContent=`Lihat keranjang (${count}) - ${rupiah(total)}`;
+ $("fab").classList.toggle("show",count>0&&!$("cart-drawer").classList.contains("open"));
+}
+$("cart-items").addEventListener("click",e=>{
+ const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.dec)changeQty(+b.dataset.dec,-1);
+ else if(b.dataset.inc)changeQty(+b.dataset.inc,1);
+ else if(b.dataset.del)removeItem(+b.dataset.del);
+});
+const openCart=()=>{toggleCart(true);updateCartUI()},shutCart=()=>{toggleCart(false);updateCartUI()};
+$("btn-cart").onclick=openCart;$("fab").onclick=openCart;$("close-cart").onclick=shutCart;$("scrim").onclick=shutCart;
+
+/* ---------- checkout ---------- */
+const co=$("modal-checkout");
+$("checkout-btn").onclick=()=>{if(!cart.length)return alert("Keranjang masih kosong!");shutCart();openModal(co)};
+$("close-checkout").onclick=$("cancel-checkout").onclick=()=>closeModal(co);
+$("checkout-form").addEventListener("submit",e=>{
+ e.preventDefault();
+ const ph=$("cf-phone"),er=$("phone-error");
+ if(!e.target.checkValidity()){er.classList.toggle("hidden",ph.validity.valid);e.target.reportValidity();return}
+ er.classList.add("hidden");
+ const f=new FormData(e.target);
+ let t="Halo Bean'S Bake! Saya ingin memesan:\n\n";
+ cart.forEach(c=>{const p=PRODUCTS.find(x=>x.id===c.id);if(p)t+=`• ${p.name} (${c.qty} pcs) — ${rupiah(p.price*c.qty)}\n`});
+ t+=`\nTotal: ${$("cart-total").textContent}\n\nNama: ${f.get("name")}\nAlamat: ${f.get("address")}, ${f.get("city")}\nNo WA: ${f.get("phone")}`;
+ window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t)}`,"_blank","noopener,noreferrer");
+ closeModal(co);cart=[];saveCart();updateCartUI();e.target.reset();
+});
+
+/* ---------- init ---------- */
+loadCart();renderProducts();updateCartUI();
+</script>
+</body>
 </html>
